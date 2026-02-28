@@ -47,3 +47,8 @@ class Note(Base):
         DateTime(timezone=True), 
         server_default=func.now() # tells database time instead of python time
     )
+
+    updated_at = Column(
+        DateTime(timezone=True),
+        onupdate=func.now()
+    )
