@@ -151,3 +151,33 @@ def update_note(
     db.refresh(note)
 
     return note
+
+#  GET /topics
+# return:
+# {
+#   "family": [ ...notes ],
+#   "school": [ ...notes ],
+#   "mental health": [ ...notes ],
+#   "general": [ ...notes ]
+# }
+
+# Query all notes from DB
+# Loop through them
+# Group them into dictionary by topic
+# Return dictionary
+
+@router.get("/topics")
+def get_topics(db: Session = Depends(get_db)):
+    notes = db.query(Note).order_by(Note.created_at.desc()).all()
+
+    grouped = {}
+
+    for note in notes:
+        topic = note.topic
+
+    if topic not in grouped:
+        grouped[topic] = []
+
+    grouped[topic].append(note)
+
+    return grouped

@@ -1,20 +1,32 @@
 def detect_topic(title: str, content: str) -> str:
     text = f"{title} {content}".lower()
 
-    # Family-related
-    if any(word in text for word in ["mother", "father", "mom", "dad", "family", "parents"]):
-        return "family"
-    
-    # School-related
-    if any(word in text for word in ["exam", "test", "score", "school", "homework", "math", "class", "teacher"]):
-        return "school"
+    # Create a dictionary of topics
+    # Each topic has a list of keywords
+    # Count how many times keywords appear
+    # Choose topic with highest score
+    # If all scores = 0 → return "general"
 
-    # Mental Health
-    if any(word in text for word in ["stress", "anxiety", "overwhelmed", "panic", "sad", "depressed", "overthinking"]):
-        return "mental health"
+    topics = {
+        "family": ["mother", "father", "mom", "dad", "family", "parents"],
+        "school": ["exam", "test", "school", "homework", "math", "class", "teacher"],
+        "mental health": ["stress", "anxiety", "overwhelmed", "panic", "sad", "depressed"],
+        "coding": ["code", "bug", "project", "programming", "github", "coding"]
+    }
+
+    scores = {}
+
+    for topic, keywords in topics.items():
+        score = 0
+        for word in keywords:
+            score += text.count(word)
+        scores[topic] = score
+
+    # find highest scoring topic
+    best_topic = max(scores, key=scores.get)
+
+    # if no keywords are found
+    if scores[best_topic] == 0:
+        return "general"
     
-    # Coding / projects
-    if any(word in text for word in ["code", "bug", "project", "programming", "github"]):
-        return "coding"
-    
-    return "general"
+    return best_topic
