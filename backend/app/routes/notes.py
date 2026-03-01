@@ -27,6 +27,7 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 from ..models import Note
 from ..schemas import NoteCreate
+from ..ai_service import detect_topic
 
 router = APIRouter()
 
@@ -34,12 +35,12 @@ router = APIRouter()
 @router.post("/notes")
 def create_note(note: NoteCreate, db: Session = Depends(get_db)):
     # temp topic until ai added
-    detected_topic = "general"
+    topic = detect_topic(note.title, note.content)
 
     new_note = Note(
         title =  note.title, 
         content = note.content, 
-        topic = detected_topic
+        topic = topic
     )
 
     db.add(new_note)
@@ -134,7 +135,17 @@ def update_note(
     if update_data.content is not None:
         note.content = update_data.content
 
-    note.topic = "general"
+    # Input: title + content , Output: short topic label
+    # Text → simple classifier → topic string
+
+    # This file will:
+    # Accept title + content
+    # Call OpenAI
+    # Return topic string
+
+    # Then your route does:
+    # def detect_topic(title: str, content: str) -> str: - Clean separation.
+    note.topic = detect_topic(note.title, note.content)
 
     db.commit()
     db.refresh(note)
