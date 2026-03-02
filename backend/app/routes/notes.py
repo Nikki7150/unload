@@ -28,19 +28,21 @@ from ..database import get_db
 from ..models import Note
 from ..schemas import NoteCreate
 from ..ai_service import detect_topic
+from ..dependencies import get_current_user
 
 router = APIRouter()
 
 # POST /notes
 @router.post("/notes")
-def create_note(note: NoteCreate, db: Session = Depends(get_db)):
+def create_note(note: NoteCreate, db: Session = Depends(get_db), current_user = Depends(get_current_user)):
     # temp topic until ai added
     topic = detect_topic(note.title, note.content)
 
     new_note = Note(
         title =  note.title, 
         content = note.content, 
-        topic = topic
+        topic = topic,
+        user_id = current_user.id
     )
 
     db.add(new_note)
@@ -73,9 +75,10 @@ def get_notes(
     # WHERE title LIKE '%stress%' OR content LIKE '%stress%' OR topic LIKE '%stress%'
     # which becomes = Note.title.ilike(...)
     query: Optional[str] = Query(None), # url can include ?query=something, or query is null
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db), 
+    current_user = Depends(get_current_user)
 ):
-    notes_query = db.query(Note)
+    notes_query = db.query(Note).filter(Note.user_id == current_user.id)
 
     if query: # apply filtering if user searches
         search = f"%{query}%"
@@ -87,7 +90,7 @@ def get_notes(
             )
         )
 
-    notes = db.query(Note).order_by(Note.created_at.desc()).all() # new notes first
+    notes = notes_query.order_by(Note.created_at.desc()).all() # new notes first
 
     return notes
 
@@ -167,17 +170,20 @@ def update_note(
 # Return dictionary
 
 @router.get("/topics")
-def get_topics(db: Session = Depends(get_db)):
-    notes = db.query(Note).order_by(Note.created_at.desc()).all()
+def get_topics(db: Session = Depends(get_db), current_user = Depends(get_current_user)):
+    notes = (db.query(Note).filter(Note.user_id == current_user.id).order_by(Note.created_at.desc()).all())
 
     grouped = {}
 
     for note in notes:
-        topic = note.topic
-
-    if topic not in grouped:
-        grouped[topic] = []
-
-    grouped[topic].append(note)
+        if note.topic not in grouped:
+            grouped[note.topic] = []
+        grouped[note.topic].append(note)
 
     return grouped
+
+# using current_user: 
+# User A sees only their folders.
+# User B sees only their folders.
+# Even if someone guesses the API endpoint, they cannot see others' notes.
+# Database is properly scoped.

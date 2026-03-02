@@ -1,3 +1,6 @@
+/* global styles
+affects everything int he app */
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

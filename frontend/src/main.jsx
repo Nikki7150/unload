@@ -8,3 +8,8 @@ createRoot(document.getElementById('root')).render(
     <App />
   </StrictMode>,
 )
+
+// This is the entry point of your React app.
+// Finds the #root div in index.html
+// Injects <App /> into it
+// Boots the entire React application

@@ -55,3 +55,30 @@ class NoteUpdate(BaseModel):
         if self.title is None and self.content is None:
             raise ValueError("At least one field should be provided")
         return self
+    
+# Receive email + password
+# Check if user already exists
+# Hash password
+# Create user
+# Return success
+
+from pydantic import EmailStr, BaseModel
+
+class UserCreate(BaseModel):
+    email: EmailStr
+    password: str
+
+class UserResponse(BaseModel):
+    id: UUID
+    email: EmailStr
+
+    class Config:
+        from_attributes = True
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str
