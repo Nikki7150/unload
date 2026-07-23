@@ -1,8 +1,8 @@
 # PASSWORD HASHING HELPERS
-from passlib import CryptContext
+from passlib.context import CryptContext
 
 # manages hashing schemes and use bcrype specifically
-pwd_context = CryptContext(schemes=["bcrypt"], deprecate="auto")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
