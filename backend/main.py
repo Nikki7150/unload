@@ -3,10 +3,33 @@ from sqlalchemy.orm import Session
 
 import models, schemas, security, tokens
 from database import engine, get_db 
+from fastapi.security import OAuth2PasswordBearer
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    # 1. decode the token using tokens.decode_access_token(token)
+    decoded_token = tokens.decode_access_token(token)
+    # 2. if it returns None (invalid/expired) → raise HTTPException(401, "Invalid or expired token")
+    if decoded_token is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired token."
+        )
+    # 3. otherwise, the decoded value is the user's id (as a string) — query the db for that user
+    user = db.query(models.User).filter(models.User.id == int(decoded_token)).first()
+    # 4. if no user found with that id → raise HTTPException(401, "User not found")
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User not found."
+        )
+    # 5. return the user object
+    return user
 
 @app.post("/signup", response_model=schemas.UserOut)
 def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
