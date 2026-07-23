@@ -81,3 +81,23 @@ def login(user: schemas.UserLogin, db: Session = Depends(get_db)):
     )
     # 4. return {"access_token": ..., "token_type": "bearer"}
     return {"access_token": access_token, "token_type": "bearer"}
+
+@app.post("/notes", response_model=schemas.NoteOut)
+def create_note(note: schemas.NoteCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    # 1. create a new models.Note(...) using the fields from `note`, plus user_id from current_user.id
+    note_data = note.model_dump()
+    db_note = models.Note(**note_data, user_id=current_user.id)
+    # 2. add it to db, commit, refresh (same try/except/rollback pattern as signup)
+    try:
+        db.add(db_note)
+        db.commit()
+        db.refresh(db_note)
+    except Exception as e:
+        db.rollback()
+        print("ERROR:", e)
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="An error occured while creating note."
+        )
+    # 3. return the new note
+    return db_note
