@@ -101,3 +101,9 @@ def create_note(note: schemas.NoteCreate, db: Session = Depends(get_db), current
         )
     # 3. return the new note
     return db_note
+
+@app.get("/notes", response_model=list[schemas.NoteOut])
+def get_notes(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    # return all notes belonging to current_user
+    notes = db.query(models.Note).filter(models.Note.user_id == current_user.id).all()
+    return notes
