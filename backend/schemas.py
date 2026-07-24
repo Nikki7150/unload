@@ -29,7 +29,6 @@ class Token(BaseModel):
 class NoteCreate(BaseModel):
     title: Optional[str] = None
     journal: str
-    topic: Optional[str] = None
 
 class NoteOut(BaseModel):
     title: Optional[str] = None

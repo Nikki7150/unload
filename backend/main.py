@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-import models, schemas, security, tokens
+import models, schemas, security, tokens, ai_service
 from database import engine, get_db 
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.middleware.cors import CORSMiddleware
@@ -95,6 +95,8 @@ def login(user: schemas.UserLogin, db: Session = Depends(get_db)):
 def create_note(note: schemas.NoteCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     # 1. create a new models.Note(...) using the fields from `note`, plus user_id from current_user.id
     note_data = note.model_dump()
+    # call detect_topic using note.title and note.journal, add it into note_data
+    note_data["topic"] = ai_service.detect_topic(note.title, note.journal)
     db_note = models.Note(**note_data, user_id=current_user.id)
     # 2. add it to db, commit, refresh (same try/except/rollback pattern as signup)
     try:
