@@ -5,6 +5,7 @@ import models, schemas, security, tokens, ai_service
 from database import engine, get_db 
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import or_
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
@@ -136,6 +137,14 @@ def get_note(note_id: int, db: Session = Depends(get_db), current_user: models.U
         )
     # 4. return the note
     return note
+
+@app.get("/notes/search", response_model=list[schemas.NoteOut])
+def search_notes(q: str, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    # 1. query notes belonging to current_user
+    # 2. AND where title OR journal contains the search term q
+    notes = db.query(models.Note).filter(models.User.id == current_user.id, or_(models.Note.title.contains(q), models.Note.journal.contains(q))).all()
+    # 3. return the results
+    return notes
 
 @app.delete("/notes/{note_id}")
 def delete_note(note_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
