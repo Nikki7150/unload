@@ -94,7 +94,6 @@ def create_note(note: schemas.NoteCreate, db: Session = Depends(get_db), current
         db.refresh(db_note)
     except Exception as e:
         db.rollback()
-        print("ERROR:", e)
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="An error occured while creating note."
@@ -107,3 +106,50 @@ def get_notes(db: Session = Depends(get_db), current_user: models.User = Depends
     # return all notes belonging to current_user
     notes = db.query(models.Note).filter(models.Note.user_id == current_user.id).all()
     return notes
+
+@app.get("/notes/{note_id}", response_model=schemas.NoteOut)
+def get_note(note_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    # 1. query for the note matching note_id
+    note = db.query(models.Note).filter(models.Note.id == note_id).first()
+    # 2. if not found → raise HTTPException(404, "Note not found")
+    if not note:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Note not found"
+        )
+    # 3. IMPORTANT: check that note.user_id == current_user.id — if not, raise HTTPException(403, "Not authorized to view this note")
+    if note.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to view this note"
+        )
+    # 4. return the note
+    return note
+
+@app.delete("/notes/{note_id}")
+def delete_note(note_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    # 1. query for the note matching note_id
+    note = db.query(models.Note).filter(models.Note.id == note_id).first()
+    # 2. if not found → raise HTTPException(404, "Note not found")
+    if not note:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Note not found"
+        )
+    # 3. IMPORTANT: check that note.user_id == current_user.id — if not, raise HTTPException(403, "Not authorized to view this note")
+    if note.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to view this note"
+        )
+    # 4. return the note
+    try: 
+        db.delete(note)
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="An error occured while deleting note."
+        )
+    return {"detail": "Note deleted successfully"}
