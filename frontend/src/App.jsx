@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import './App.css'
 import AuthScreen from './pages/AuthScreen'
-import Entry from './pages/Entry'
+import Home from './pages/Home'
 import useAuthStore from './store/authStore'
 
 function App() {
   const token = useAuthStore((state) => state.token);
   return (
     <div className="App">
-      {token ? <Entry /> : <AuthScreen />}
+      {token ? <Home /> : <AuthScreen />}
     </div>
   )
 }
