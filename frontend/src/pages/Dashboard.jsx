@@ -6,25 +6,27 @@ export default function Dashboard() {
     const [error, setError] = useState(null);
     const token = useAuthStore((state) => state.token);
     const logout = useAuthStore((state) => state.logout);
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const fetchNotes = async () => {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/notes', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Failed to fetch notes');
+            }
+            const data = await response.json();
+            setNotes(data);
+        } catch (error) {
+            setError('Something went wrong. Please try again.');
+        }
+    };
 
     useEffect(() => {
-        const fetchNotes = async () => {
-            try {
-                const response = await fetch('http://127.0.0.1:8000/notes', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                if (!response.ok) {
-                    throw new Error('Failed to fetch notes');
-                }
-                const data = await response.json();
-                setNotes(data);
-            } catch (error) {
-                setError('Something went wrong. Please try again.');
-            }
-        };
         fetchNotes();
     }, []);
 
@@ -45,12 +47,42 @@ export default function Dashboard() {
         }
     };
 
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/notes/search?q=${searchQuery}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Search failed');
+            }
+            const data = await response.json();
+            setNotes(data);
+        } catch (error) {
+            setError('Something went wrong. Please try again.');
+        }
+    };
+
     return (
         <div>
             <button onClick={logout}>Logout</button>
-            
+
             <h1>My Journals</h1>
             {error && <p>{error}</p>}
+            <form onSubmit={handleSearch}>
+                <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search by topic..."
+                />
+                <button type="submit">Search</button>
+            </form>
+            {notes.length === 0 && <p>No notes found.</p>}
+            <button onClick={fetchNotes}>Refresh</button>
             {notes.map((note) => (
                 <div key={note.id}>
                     <button onClick={() => {

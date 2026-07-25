@@ -41,6 +41,14 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     # 5. return the user object
     return user
 
+@app.get("/notes/search", response_model=list[schemas.NoteOut])
+def search_notes(q: str, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    # 1. query notes belonging to current_user
+    # 2. AND where title OR journal contains the search term q
+    notes = db.query(models.Note).filter(models.User.id == current_user.id, or_(models.Note.title.contains(q), models.Note.journal.contains(q))).all()
+    # 3. return the results
+    return notes
+
 @app.post("/signup", response_model=schemas.UserOut)
 def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
     # 1. check if email or username already exists in db — if so, raise HTTPException(400, ...)
@@ -137,14 +145,6 @@ def get_note(note_id: int, db: Session = Depends(get_db), current_user: models.U
         )
     # 4. return the note
     return note
-
-@app.get("/notes/search", response_model=list[schemas.NoteOut])
-def search_notes(q: str, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
-    # 1. query notes belonging to current_user
-    # 2. AND where title OR journal contains the search term q
-    notes = db.query(models.Note).filter(models.User.id == current_user.id, or_(models.Note.title.contains(q), models.Note.journal.contains(q))).all()
-    # 3. return the results
-    return notes
 
 @app.delete("/notes/{note_id}")
 def delete_note(note_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
