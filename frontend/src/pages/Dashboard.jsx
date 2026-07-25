@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import useAuthStore from "../store/authStore";
 import "../styles/Dashboard.css";
 import JournalViewer from "./JournalViewer";
+import { FaTrash } from "react-icons/fa";
 
 export default function Dashboard() {
     const [notes, setNotes] = useState([]);
@@ -74,30 +75,37 @@ export default function Dashboard() {
             <button className="logout-button" onClick={logout}>Logout</button>
             <div className="journal-dashboard">
                 <div className="left-page">
-                    <h1>My Journals</h1>
                     {error && <p>{error}</p>}
-                    <form onSubmit={handleSearch}>
-                        <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder="Search by topic..."
-                        />
-                        <button type="submit">Search</button>
-                    </form>
+                    <div className="dashboard-header">
+                        <h1 className="dashboard-title">My Journals</h1>
+                        <form onSubmit={handleSearch} className="search-form">
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="Search..."
+                                className="search-input"
+                            />
+                            <button type="submit" className="search-button">Search</button>
+                        </form>
+                    </div>
                     {notes.length === 0 && <p>No notes found.</p>}
-                    <button onClick={fetchNotes}>Refresh</button>
+                    <button onClick={fetchNotes} className="refresh-button">Refresh</button>
                     {notes.map((note) => (
-                        <div key={note.id} onClick={() => setSelectedNote(note)}>
+                        <div key={note.id} onClick={() => setSelectedNote(note)} className={`note-item ${selectedNote && selectedNote.id === note.id ? 'selected' : ''}`}>
                             <button onClick={(e) => {
                                 e.stopPropagation();
                                 const isConfirmed = window.confirm('Are you sure you want to delete this note?');
                                 if (isConfirmed) {
                                     handleDelete(note.id);
                                 }
-                            }}>Delete</button>
-                            <h3>{note.title}</h3>
-                            <p><em>{note.topic}</em></p>
+                            }} className="delete-button">
+                                <FaTrash />
+                            </button>
+                            <h3 className="note-title">{note.title}</h3>
+                            <p className="note-topic">
+                                <em>{note.topic}</em>
+                            </p>
                         </div>
                     ))}
                 </div>
