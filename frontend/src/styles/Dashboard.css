@@ -1,0 +1,54 @@
+/*-------------------------------------------------------- JOURNAL DASHBOARD --------------------------------------------------------*/
+.logout-button {
+    background-color: #c25362;
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    position: fixed;
+    right: 10.5%;
+    top: 11%;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.dashboard {
+    grid-column: 1 / -1;
+    height: 100%;
+    width: 100%;
+}
+
+.journal-dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.journal-dashboard .left-page {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.journal-dashboard .right-page {
+    height: 100%;
+    width: 96.5%;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

@@ -17,9 +17,11 @@
     cursor: pointer;
     position: fixed;
     right: 10.5%;
-    top: 11%;
+    top: 31%;
     writing-mode: vertical-rl;
     text-orientation: upright;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .home-container {

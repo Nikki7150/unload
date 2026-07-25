@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import useAuthStore from "../store/authStore";
 import "../styles/Dashboard.css";
+import JournalViewer from "./JournalViewer";
 
 export default function Dashboard() {
     const [notes, setNotes] = useState([]);
@@ -8,6 +9,7 @@ export default function Dashboard() {
     const token = useAuthStore((state) => state.token);
     const logout = useAuthStore((state) => state.logout);
     const [searchQuery, setSearchQuery] = useState('');
+    const [selectedNote, setSelectedNote] = useState(null);
 
     const fetchNotes = async () => {
         try {
@@ -68,34 +70,45 @@ export default function Dashboard() {
     };
 
     return (
-        <div>
-            <button onClick={logout}>Logout</button>
-            <h1>My Journals</h1>
-            {error && <p>{error}</p>}
-            <form onSubmit={handleSearch}>
-                <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search by topic..."
-                />
-                <button type="submit">Search</button>
-            </form>
-            {notes.length === 0 && <p>No notes found.</p>}
-            <button onClick={fetchNotes}>Refresh</button>
-            {notes.map((note) => (
-                <div key={note.id}>
-                    <button onClick={() => {
-                        const isConfirmed = window.confirm('Are you sure you want to delete this note?');
-                        if (isConfirmed) {
-                            handleDelete(note.id);
-                        }
-                    }}>Delete</button>
-                    <h3>{note.title}</h3>
-                    <p>{note.journal}</p>
-                    <p><em>{note.topic}</em></p>
+        <div className="dashboard">
+            <button className="logout-button" onClick={logout}>Logout</button>
+            <div className="journal-dashboard">
+                <div className="left-page">
+                    <h1>My Journals</h1>
+                    {error && <p>{error}</p>}
+                    <form onSubmit={handleSearch}>
+                        <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            placeholder="Search by topic..."
+                        />
+                        <button type="submit">Search</button>
+                    </form>
+                    {notes.length === 0 && <p>No notes found.</p>}
+                    <button onClick={fetchNotes}>Refresh</button>
+                    {notes.map((note) => (
+                        <div key={note.id} onClick={() => setSelectedNote(note)}>
+                            <button onClick={(e) => {
+                                e.stopPropagation();
+                                const isConfirmed = window.confirm('Are you sure you want to delete this note?');
+                                if (isConfirmed) {
+                                    handleDelete(note.id);
+                                }
+                            }}>Delete</button>
+                            <h3>{note.title}</h3>
+                            <p><em>{note.topic}</em></p>
+                        </div>
+                    ))}
                 </div>
-            ))}
+                <div className="right-page">
+                    {selectedNote ? (
+                        <JournalViewer note={selectedNote} onBack={() => setSelectedNote(null)} />
+                    ) : (
+                        <p>Select a note to view it here.</p>
+                    )}
+                </div>
+            </div>
         </div>
     )
 }
