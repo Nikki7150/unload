@@ -41,8 +41,27 @@ export default function Home() {
         }
     };
 
+    const lastValidContent = useRef('');
+
+    const handleBookTextInput = () => {
+        const el = bookTextRef.current;
+        if (el.scrollHeight > el.clientHeight) {
+            // this keystroke pushed it past the visible page — revert it
+            el.innerHTML = lastValidContent.current;
+            // move cursor to the end so typing doesn't jump somewhere weird
+            const range = document.createRange();
+            const sel = window.getSelection();
+            range.selectNodeContents(el);
+            range.collapse(false);
+            sel.removeAllRanges();
+            sel.addRange(range);
+        } else {
+            lastValidContent.current = el.innerHTML;
+        }
+    };
+
     return (
-        <div>
+        <div className="home-root">
             <button className="toggle-entry-btn" onClick={() => setIsEntry(!isEntry)}>{isEntry ? 'Journals' : 'Entry'}</button>
             <div className="home-container">
                 {isEntry ? (
@@ -60,6 +79,7 @@ export default function Home() {
                             contentEditable="true"
                             ref={bookTextRef}
                             placeholder="Dump your thoughts here..."
+                            onInput={handleBookTextInput}
                             suppressContentEditableWarning={true}
                         ></div>
                         <button className="submit-btn" onClick={handleSubmit}>Submit</button>

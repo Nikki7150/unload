@@ -1,4 +1,10 @@
 /*-------------------------------------------------------- HOME --------------------------------------------------------*/
+.home-root {
+    grid-column: 1 / -1;
+    height: 100%;
+    width: 100%;
+}
+
 .toggle-entry-btn {
     background-color: #da7784;
     border: none;
@@ -20,25 +26,32 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     position: relative;
-    align-items: center;
-    justify-content: center;
     height: 100%;
     width: 100%;
+    align-items: stretch;
 }
 
 .entry-container {
     grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     height: 100%;
     width: 100%;
 }
 
 .title-row {
-    grid-column: 1 / -1;
-    padding: 30px 50px 10px 50px;
+    padding: 30px 30px 10px 30px;
 }
 
+.book-text {
+    flex: 1;
+    column-count: 2;
+    column-gap: 80px;
+    padding: 10px 30px 40px 30px;
+    line-height: 1.9;
+    outline: none;
+    height: 80vh;
+}
 .title-row input {
     width: 100%;
     font-size: 22px;
@@ -49,18 +62,23 @@
     padding-bottom: 10px;
 }
 
-.book-text {
-    grid-column: 1 / -1;
-    column-count: 2;
-    column-gap: 80px;
-    padding: 10px 50px 40px 50px;
-    line-height: 1.9;
-    outline: none;
-    min-height: 360px;
-}
-
 .book-text:empty::before {
     content: "Start writing on the left page...";
     color: #9C917A;
     font-style: italic;
+}
+
+.submit-btn {
+    background-color: #da7784;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px 20px;
+    width: 100px;
+    height: 40px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
