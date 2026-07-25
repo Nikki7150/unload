@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import useAuthStore from "../store/authStore";
+import "../styles/Dashboard.css";
 
 export default function Dashboard() {
     const [notes, setNotes] = useState([]);

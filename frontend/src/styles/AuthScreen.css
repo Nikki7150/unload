@@ -1,0 +1,135 @@
+/*-------------------------------------------------------- AUTHSCREEN --------------------------------------------------------*/
+.AuthScreen {
+    grid-column: 1 / -1;
+    height: 100%;
+    width: 100%;
+}
+
+.toggle-auth-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 13%;
+    padding: 10px 20px;
+    background-color: transparent;
+    color: #785858;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/*-------------------------------------------------------- LOGIN --------------------------------------------------------*/
+.login-screen {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.login-screen .left-page {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-screen .right-page {
+    height: 100%;
+    width: 96.5%;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form input {
+    margin: 10px 0;
+    padding: 10px;
+    width: 250px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #785858;
+    font-size: 16px;
+}
+
+.login-form button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #785858;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/*-------------------------------------------------------- SIGNUP --------------------------------------------------------*/
+.signup-screen {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.signup-screen .left-page {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.signup-screen .right-page {
+    height: 100%;
+    width: 96.5%;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.signup-form input {
+    margin: 10px 0;
+    padding: 10px;
+    width: 250px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #785858;
+    font-size: 16px;
+}
+
+.signup-form button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #785858;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}

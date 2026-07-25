@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useAuthStore from "../store/authStore";
+import "../styles/AuthScreen.css";
 
 export function Login() {
     const [email, setEmail] = useState("");
@@ -28,24 +29,33 @@ export function Login() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
-                required
-            />
-            <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                required
-            />
-            {error && <p>{error}</p>}
-            <button type="submit">Login</button>
-        </form>
+        <div className="login-screen">
+            <div className="left-page">
+                <h1>Welcome Back!</h1>
+                <p>Login to continue</p>
+            </div>
+            <div className="right-page">
+                <h1>Login</h1>
+                <form className="login-form" onSubmit={handleSubmit}>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Email"
+                        required
+                    />
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Password"
+                        required
+                    />
+                    {error && <p>{error}</p>}
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+        </div>
     )
 }
 
@@ -87,31 +97,40 @@ export function Signup() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
-                required
-            />
-            <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Username"
-                required
-            />
-            <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                required
-            />
-            {error && <p>{error}</p>}
-            <button type="submit">Signup</button>
-        </form>
+        <div className="signup-screen">
+            <div className="left-page">
+                <h1>Welcome!</h1>
+                <p>Create an account to get started</p>
+            </div>
+            <div className="right-page">
+                <h1>Signup</h1>
+                <form className="signup-form" onSubmit={handleSubmit}>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Email"
+                        required
+                    />
+                    <input
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Username"
+                        required
+                    />
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Password"
+                        required
+                    />
+                    {error && <p>{error}</p>}
+                    <button type="submit">Signup</button>
+                </form>
+            </div>
+        </div>
     )
 }
 
@@ -120,7 +139,7 @@ export default function AuthScreen() {
     return (
         <div className="AuthScreen">
             {isLogin ? <Login /> : <Signup />}
-            <button onClick={() => setIsLogin(!isLogin)}>
+            <button className="toggle-auth-btn" onClick={() => setIsLogin(!isLogin)}>
                 {isLogin ? 'Don\'t have an account? Signup' : 'Already have an account? Login'}
             </button>
         </div>

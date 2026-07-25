@@ -1,6 +1,7 @@
 import useAuthStore from "../store/authStore";
 import { useState } from "react";
 import Dashboard from "./Dashboard";
+import "../styles/Home.css";
 
 export default function Home() {
     const token = useAuthStore((state) => state.token);
