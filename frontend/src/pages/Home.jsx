@@ -1,5 +1,5 @@
 import useAuthStore from "../store/authStore";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Dashboard from "./Dashboard";
 import "../styles/Home.css";
 
@@ -12,11 +12,13 @@ export default function Home() {
     const logout = useAuthStore((state) => state.logout);
     const [ lastTopic, setLastTopic ] = useState('');
     const [isEntry, setIsEntry] = useState(true);
+    const bookTextRef = useRef(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setSuccess(false);
+        const journalEntry = bookTextRef.current.textContent;
         try {
             const response = await fetch('http://127.0.0.1:8000/notes', {
                 method: 'POST',
@@ -32,7 +34,7 @@ export default function Home() {
             const data = await response.json();
             setLastTopic(data.topic);
             setTitle('');
-            setJournalEntry('');
+            bookTextRef.current.textContent = '';
             setSuccess(true);
         } catch (error) {
             setError('Something went wrong. Please try again.');
@@ -41,29 +43,33 @@ export default function Home() {
 
     return (
         <div>
-            <button onClick={() => setIsEntry(!isEntry)}>{isEntry ? 'View Journals' : 'New Entry'}</button>
-            {isEntry ? (
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        placeholder="Title..."
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
-                    <input
-                        type="text"
-                        placeholder="Write your Journal Entry..."
-                        value={journalEntry}
-                        onChange={(e) => setJournalEntry(e.target.value)}
-                    />
-                    {error && <p>{error}</p>}
-                    {success && <p>Entry saved!</p>}
-                    {lastTopic && <p>Topic: {lastTopic}</p>}
-                    <button type="submit">Submit</button>
-                </form>
-            ) : (
-                <Dashboard />
-            )}
+            <button className="toggle-entry-btn" onClick={() => setIsEntry(!isEntry)}>{isEntry ? 'Journals' : 'Entry'}</button>
+            <div className="home-container">
+                {isEntry ? (
+                    <div className="entry-container">
+                        <div className="title-row">
+                            <input
+                                type="text"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                placeholder="Title your thoughts..."
+                            />
+                        </div>
+                        <div
+                            className="book-text"
+                            contentEditable="true"
+                            ref={bookTextRef}
+                            placeholder="Dump your thoughts here..."
+                            suppressContentEditableWarning={true}
+                        ></div>
+                        <button className="submit-btn" onClick={handleSubmit}>Submit</button>
+                        {error && <p className="error-message">{error}</p>}
+                        {success && <p className="success-message">Entry saved!</p>}
+                    </div>
+                ) : (
+                    <Dashboard />
+                )}
+            </div>
         </div>
     );
 }

@@ -70,7 +70,6 @@ export default function Dashboard() {
     return (
         <div>
             <button onClick={logout}>Logout</button>
-
             <h1>My Journals</h1>
             {error && <p>{error}</p>}
             <form onSubmit={handleSearch}>

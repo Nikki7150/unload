@@ -1,0 +1,66 @@
+/*-------------------------------------------------------- HOME --------------------------------------------------------*/
+.toggle-entry-btn {
+    background-color: #da7784;
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    position: fixed;
+    right: 10.5%;
+    top: 11%;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+}
+
+.home-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.entry-container {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100%;
+    width: 100%;
+}
+
+.title-row {
+    grid-column: 1 / -1;
+    padding: 30px 50px 10px 50px;
+}
+
+.title-row input {
+    width: 100%;
+    font-size: 22px;
+    border: none;
+    background: transparent;
+    outline: none;
+    border-bottom: 1px solid #d8ccb2;
+    padding-bottom: 10px;
+}
+
+.book-text {
+    grid-column: 1 / -1;
+    column-count: 2;
+    column-gap: 80px;
+    padding: 10px 50px 40px 50px;
+    line-height: 1.9;
+    outline: none;
+    min-height: 360px;
+}
+
+.book-text:empty::before {
+    content: "Start writing on the left page...";
+    color: #9C917A;
+    font-style: italic;
+}
