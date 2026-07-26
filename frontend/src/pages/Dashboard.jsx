@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import useAuthStore from "../store/authStore";
 import "../styles/Dashboard.css";
 import JournalViewer from "./JournalViewer";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash, FaSearch, FaTimes } from "react-icons/fa";
 
 export default function Dashboard() {
     const [notes, setNotes] = useState([]);
@@ -86,28 +86,34 @@ export default function Dashboard() {
                                 placeholder="Search..."
                                 className="search-input"
                             />
-                            <button type="submit" className="search-button">Search</button>
+                            <button type="submit" className="search-button">
+                                <FaSearch />
+                            </button>
+                            <button onClick={() => {fetchNotes(); setSearchQuery('');}} className="refresh-button"><FaTimes /></button>
                         </form>
                     </div>
-                    {notes.length === 0 && <p>No notes found.</p>}
-                    <button onClick={fetchNotes} className="refresh-button">Refresh</button>
-                    {notes.map((note) => (
-                        <div key={note.id} onClick={() => setSelectedNote(note)} className={`note-item ${selectedNote && selectedNote.id === note.id ? 'selected' : ''}`}>
-                            <button onClick={(e) => {
-                                e.stopPropagation();
-                                const isConfirmed = window.confirm('Are you sure you want to delete this note?');
-                                if (isConfirmed) {
-                                    handleDelete(note.id);
-                                }
-                            }} className="delete-button">
-                                <FaTrash />
-                            </button>
-                            <h3 className="note-title">{note.title}</h3>
-                            <p className="note-topic">
-                                <em>{note.topic}</em>
-                            </p>
-                        </div>
-                    ))}
+                    <div className="notes-list">
+                        {notes.length === 0 && <p>No notes found.</p>}
+                        {notes.map((note) => (
+                            <div key={note.id} onClick={() => setSelectedNote(note)} className={`note-item ${selectedNote && selectedNote.id === note.id ? 'selected' : ''}`}>
+                                <div className="note-header">
+                                    <h3 className="note-title">{note.title}</h3>
+                                    <button onClick={(e) => {
+                                        e.stopPropagation();
+                                        const isConfirmed = window.confirm('Are you sure you want to delete this note?');
+                                        if (isConfirmed) {
+                                            handleDelete(note.id);
+                                        }
+                                    }} className="delete-button">
+                                        <FaTrash />
+                                    </button>
+                                </div>
+                                <p className="note-topic">
+                                    <em>{note.topic}</em>
+                                </p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 <div className="right-page">
                     {selectedNote ? (

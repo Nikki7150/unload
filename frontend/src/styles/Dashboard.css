@@ -22,6 +22,7 @@
     grid-column: 1 / -1;
     height: 100%;
     width: 100%;
+    padding: 10px;
 }
 
 .journal-dashboard {
@@ -46,6 +47,7 @@
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 20px;
+    position: sticky;
 }
 
 .dashboard-title {
@@ -63,10 +65,103 @@
 .search-input {
     padding: 5px;
     font-size: 1rem;
-    border-bottom: 1px solid #ccc;
+    border: none;
+    border-bottom: 2px solid #625151;
     border-radius: 4px;
     margin-right: 10px;
     background-color: transparent;
+    width: 250px;
+}
+
+.search-input:focus {
+    outline: none;
+    border-bottom-color: #bc4d4d;
+}
+
+.search-button {
+    background-color: transparent;
+    color: #625151;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 20px;
+    margin-left: 10px;
+}
+
+.refresh-button {
+    background-color: transparent;
+    color: #625151;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 20px;
+}
+
+.journal-dashboard .left-page p {
+    color: #bc4d4d;
+    margin: 10px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.notes-list {
+    display: grid;
+    grid-template-columns: repeat(3, 190px);
+    grid-auto-flow: row;
+    gap: 10px;
+    overflow-y: auto;
+    max-height: 80%;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.note-item {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #625151;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 150px;
+    height: 150px;
+    position: relative;
+}
+
+.note-item:hover {
+    background-color: #d4d0c6;
+}
+
+.note-item.selected {
+    background-color: #beb2b2;
+    border-color: #625151;
+}
+
+.note-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.note-title {
+    margin: 0;
+    font-size: 1.2rem;
+    flex-grow: 1;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+.delete-button {
+    background-color: transparent;
+    color: #c25362;
+    border: 1px solid #c25362;
+    padding: 5px;
+    cursor: pointer;
+    font-size: .7rem;
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
 
 .journal-dashboard .right-page {
