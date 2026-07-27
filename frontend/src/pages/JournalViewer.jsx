@@ -9,6 +9,7 @@ export default function JournalViewer({ note, onBack, onUpdate }) {
     const [editTitle, setEditTitle] = useState('');
     const [editJournal, setEditJournal] = useState('');
     const token = useAuthStore((state) => state.token);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     if(!note) return null;
 
     const startEditing = () => {
@@ -18,6 +19,7 @@ export default function JournalViewer({ note, onBack, onUpdate }) {
     };
 
     const handleSave = async () => {
+        setIsSubmitting(true);
         try {
             const response = await fetch(`http://127.0.0.1:8000/notes/${note.id}`, {
                 method: 'PUT',
@@ -38,6 +40,8 @@ export default function JournalViewer({ note, onBack, onUpdate }) {
             setIsEditing(false);
         } catch (error) {
             console.error(error);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -63,7 +67,9 @@ export default function JournalViewer({ note, onBack, onUpdate }) {
                         onChange={(e) => setEditJournal(e.target.value)}
                     />
                     <div className="journal-edit-buttons">
-                        <button onClick={handleSave}>Save</button>
+                        <button onClick={handleSave} disabled={isSubmitting}>
+                            {isSubmitting ? 'Saving...' : 'Save'}
+                        </button>
                         <button onClick={() => setIsEditing(false)}>Cancel</button>
                     </div>
                 </div>

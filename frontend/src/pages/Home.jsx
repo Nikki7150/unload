@@ -13,11 +13,13 @@ export default function Home() {
     const [ lastTopic, setLastTopic ] = useState('');
     const [isEntry, setIsEntry] = useState(true);
     const bookTextRef = useRef(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setSuccess(false);
+        setIsSubmitting(true);
         const journalEntry = bookTextRef.current.textContent;
         try {
             const response = await fetch('http://127.0.0.1:8000/notes', {
@@ -38,6 +40,8 @@ export default function Home() {
             setSuccess(true);
         } catch (error) {
             setError('Something went wrong. Please try again.');
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -83,7 +87,9 @@ export default function Home() {
                             onInput={handleBookTextInput}
                             suppressContentEditableWarning={true}
                         ></div>
-                        <button className="submit-btn" onClick={handleSubmit}>Submit</button>
+                        <button className="submit-btn" onClick={handleSubmit} disabled={isSubmitting}>
+                            {isSubmitting ? 'Saving...' : 'Submit'}
+                        </button>
                         {error && <p className="error-message">{error}</p>}
                         {success && <p className="success-message">Entry saved!</p>}
                     </div>

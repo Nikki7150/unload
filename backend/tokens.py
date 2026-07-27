@@ -3,7 +3,7 @@ from jose import jwt, JWTError
 
 SECRET_KEY = "some-random-secret-string-change-this-later" # used to sign tokens
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 7 days
 
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()

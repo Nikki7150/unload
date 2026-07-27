@@ -12,6 +12,7 @@ export default function Dashboard() {
     const [selectedNote, setSelectedNote] = useState(null);
     const [topics, setTopics] = useState([]);
     const [activeTopic, setActiveTopic] = useState(null);
+    const [isFilterVisible, setIsFilterVisible] = useState(false);
 
     const fetchNotes = async () => {
         try {
@@ -136,7 +137,10 @@ export default function Dashboard() {
                         </form>
                     </div>
                     {notes.length === 0 && <p className="no-notes">No notes found.</p>}
-                    <div className="topic-filters">
+                    <button className="topic-filters" onClick={() => setIsFilterVisible(!isFilterVisible)}>
+                        {activeTopic ? `Filtered: ${activeTopic}` : 'Topic Filters'}
+                    </button>
+                    <div className="topic-filters-selection" style={{ display: isFilterVisible ? 'grid' : 'none' }}>
                         {topics.map((topic) => (
                             <button
                                 key={topic}
