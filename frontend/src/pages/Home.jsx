@@ -62,6 +62,7 @@ export default function Home() {
 
     return (
         <div className="home-root">
+            <button className="logout-button" onClick={logout}>Logout</button>
             <button className="toggle-entry-btn" onClick={() => setIsEntry(!isEntry)}>{isEntry ? 'Journals' : 'Entry'}</button>
             <div className="home-container">
                 {isEntry ? (

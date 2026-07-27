@@ -19,3 +19,4 @@ class Note(Base):
     topic = Column(String, nullable=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    updated_at = Column(DateTime, nullable=True, default=None, onupdate=datetime.utcnow)

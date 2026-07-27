@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 from google import genai
+from google.genai import types
 
 load_dotenv()
 
@@ -16,7 +17,8 @@ def detect_topic(title: str, content: str) -> str:
 
     response = client.models.generate_content(
         model=MODEL_NAME,
-        contents=prompt
+        contents=prompt,
+        config=types.GenerateContentConfig(temperature=0)
     )
 
     topic = response.text.strip().lower()

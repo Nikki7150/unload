@@ -36,6 +36,11 @@ class NoteOut(BaseModel):
     topic: Optional[str] = None
     id: int
     created_at: datetime
+    updated_at: Optional[datetime] = None
 
     class Config():
         orm_mode = True
+
+class NoteUpdate(BaseModel):
+    title: Optional[str] = None
+    journal: Optional[str] = None

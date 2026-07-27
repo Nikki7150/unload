@@ -1,23 +1,4 @@
 /*-------------------------------------------------------- JOURNAL DASHBOARD --------------------------------------------------------*/
-.logout-button {
-    background-color: #c25362;
-    border: none;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    cursor: pointer;
-    position: fixed;
-    right: 10.5%;
-    top: 11%;
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-}
-
 .dashboard {
     grid-column: 1 / -1;
     height: 100%;
@@ -29,6 +10,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     position: relative;
+    align-items: center;
+    justify-content: center;
     height: 100%;
     width: 100%;
 }
@@ -38,7 +21,6 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
 }
 
 .dashboard-header {
@@ -105,6 +87,10 @@
     margin-left: auto;
 }
 
+.no-notes p{
+    text-align: center;
+}
+
 .notes-list {
     display: grid;
     grid-template-columns: repeat(3, 190px);
@@ -169,7 +155,13 @@
     padding-left: 20px;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
+}
+
+.no-note-selected {
+    color: #625151;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 60%;
 }
 
 /*-------------------------------------------------------- JOURNAL VIEWER --------------------------------------------------------*/
@@ -203,14 +195,86 @@
     align-self: flex-start;
 }
 
+.journal-viewer-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .journal-viewer-title {
     font-size: 2rem;
     margin: 0;
     margin-bottom: 10px;
 }
 
-.journal-viewer-content {
+.edit-button {
+    background-color: transparent;
+    color: #625151;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 1.5rem;
+    margin-right: 10px;
+}
+
+.journal-timeago {
+    font-size: 0.9rem;
+    color: #625151;
+    margin: 0;
+}
+
+.journal-viewer-journal {
     line-height: 1.5;
     white-space: pre-wrap;
     word-wrap: break-word;
+    height: 680px;
+    width: 100%;
+    overflow-y: scroll;
+}
+
+.journal-edit-form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.journal-viewer-title-input {
+    width: 100%;
+    font-size: 22px;
+    border: none;
+    background: transparent;
+    outline: none;
+    border-bottom: 1px solid #d8ccb2;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.journal-viewer-journal-input {
+    flex: 1;
+    column-count: 2;
+    column-gap: 80px;
+    padding: 20px;
+    line-height: 1.9;
+    outline: none;
+    overflow-y: scroll;
+    resize: none;
+}
+
+.journal-edit-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    margin-right: 20px;
+}
+
+.journal-edit-buttons button {
+    background-color: #867678;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px;
+    margin-left: 10px;
 }

@@ -49,6 +49,18 @@ def search_notes(q: str, db: Session = Depends(get_db), current_user: models.Use
     # 3. return the results
     return notes
 
+# get a disticnt list of topics a user has -  just a list of all the topics in general to choose from
+@app.get("/notes/topics")
+def get_topics(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    topics = db.query(models.Note.topic).filter(models.Note.user_id == current_user.id).distinct().all()
+    return [t[0] for t in topics]
+
+@app.get("/notes/by-topics", response_model=list[schemas.NoteOut])
+def get_notes_by_topic(topic: str, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    # filter notes where user_id matches and topic matched exactly
+    notes = db.query(models.Note).filter(models.Note.user_id == current_user.id, models.Note.topic == topic).all()
+    return notes
+
 @app.post("/signup", response_model=schemas.UserOut)
 def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
     # 1. check if email or username already exists in db — if so, raise HTTPException(400, ...)
@@ -114,6 +126,7 @@ def create_note(note: schemas.NoteCreate, db: Session = Depends(get_db), current
         db.refresh(db_note)
     except Exception as e:
         db.rollback()
+        print("ERROR: ", e)
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="An error occured while creating note."
@@ -173,3 +186,36 @@ def delete_note(note_id: int, db: Session = Depends(get_db), current_user: model
             detail="An error occured while deleting note."
         )
     return {"detail": "Note deleted successfully"}
+
+@app.put("/notes/{note_id}", response_model=schemas.NoteOut)
+def edit_note(note_id: int, note_update: schemas.NoteUpdate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    note = db.query(models.Note).filter(models.Note.id == note_id).first()
+    if not note:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Note not found"
+        )
+    if note.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to view this note"
+        )
+    # 1. if note_update.title was provided, update note.title
+    if note_update.title is not None:
+        note.title = note_update.title
+    # 2. if note_update.journal was provided, update note.journal
+    if note_update.journal is not None:
+        note.journal = note_update.journal
+        new_topic = ai_service.detect_topic(note.title, note.journal)
+        if note.topic != new_topic:
+            note.topic = new_topic
+    try:
+        db.commit()
+        db.refresh(note)
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="An error occured while updating note"
+        )
+    return note

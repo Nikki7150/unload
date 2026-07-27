@@ -8,9 +8,10 @@ export default function Dashboard() {
     const [notes, setNotes] = useState([]);
     const [error, setError] = useState(null);
     const token = useAuthStore((state) => state.token);
-    const logout = useAuthStore((state) => state.logout);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedNote, setSelectedNote] = useState(null);
+    const [topics, setTopics] = useState([]);
+    const [activeTopic, setActiveTopic] = useState(null);
 
     const fetchNotes = async () => {
         try {
@@ -30,8 +31,27 @@ export default function Dashboard() {
         }
     };
 
+    const fetchTopics = async () => {
+        try {
+            const response = await fetch('http://127.0.1:8000/notes/topics', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Failed to fetch topics');
+            }
+            const data = await response.json();
+            setTopics(data);
+        } catch (error) {
+            setError('Something went wrong. Please try again.');
+        }
+    };
+
     useEffect(() => {
         fetchNotes();
+        fetchTopics();
     }, []);
 
     const handleDelete = async (noteId) => {
@@ -70,9 +90,32 @@ export default function Dashboard() {
         }
     };
 
+    const handleUpdate = (updatedNote) => {
+        setNotes(notes.map(note => note.id === updatedNote.id ? updatedNote : note));
+        setSelectedNote(updatedNote);
+    };
+
+    const handleTopicClick = async (topic) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/notes/by-topics?topic=${topic}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Failed to filter by topic');
+            }
+            const data = await response.json();
+            setNotes(data);
+            setActiveTopic(topic);
+        } catch (error) {
+            setError('Something went wrong. Please try again.');
+        }
+    };
+
     return (
         <div className="dashboard">
-            <button className="logout-button" onClick={logout}>Logout</button>
             <div className="journal-dashboard">
                 <div className="left-page">
                     {error && <p>{error}</p>}
@@ -92,8 +135,24 @@ export default function Dashboard() {
                             <button onClick={() => {fetchNotes(); setSearchQuery('');}} className="refresh-button"><FaTimes /></button>
                         </form>
                     </div>
+                    {notes.length === 0 && <p className="no-notes">No notes found.</p>}
+                    <div className="topic-filters">
+                        {topics.map((topic) => (
+                            <button
+                                key={topic}
+                                onClick={() => handleTopicClick(topic)}
+                                className={`topic-filter-button ${activeTopic === topic ? 'active' : ''}`}
+                            >
+                                {topic}
+                            </button>
+                        ))}
+                        {activeTopic && (
+                            <button onClick={() => {fetchNotes(); setActiveTopic(null);}} className="clear-filter-button">
+                                Clear Filter
+                            </button>
+                        )}
+                    </div>
                     <div className="notes-list">
-                        {notes.length === 0 && <p>No notes found.</p>}
                         {notes.map((note) => (
                             <div key={note.id} onClick={() => setSelectedNote(note)} className={`note-item ${selectedNote && selectedNote.id === note.id ? 'selected' : ''}`}>
                                 <div className="note-header">
@@ -117,9 +176,9 @@ export default function Dashboard() {
                 </div>
                 <div className="right-page">
                     {selectedNote ? (
-                        <JournalViewer note={selectedNote} onBack={() => setSelectedNote(null)} />
+                        <JournalViewer note={selectedNote} onBack={() => setSelectedNote(null)} onUpdate={handleUpdate} />
                     ) : (
-                        <p>Select a note to view it here.</p>
+                        <p className="no-note-selected">Select a note to view it here.</p>
                     )}
                 </div>
             </div>
