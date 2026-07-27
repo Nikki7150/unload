@@ -136,10 +136,16 @@ export default function Dashboard() {
                             <button onClick={() => {fetchNotes(); setSearchQuery('');}} className="refresh-button"><FaTimes /></button>
                         </form>
                     </div>
-                    {notes.length === 0 && <p className="no-notes">No notes found.</p>}
-                    <button className="topic-filters" onClick={() => setIsFilterVisible(!isFilterVisible)}>
-                        {activeTopic ? `Filtered: ${activeTopic}` : 'Topic Filters'}
-                    </button>
+                    {notes.length === 0 && (
+                        searchQuery || activeTopic
+                        ? <p className="no-notes">No entries match that search.</p>
+                        : <p className="no-notes">Nothing here yet. Write your first entry.</p>
+                    )}
+                    {topics.length > 0 && notes.length > 0 && (
+                        <button className="topic-filters" onClick={() => setIsFilterVisible(!isFilterVisible)}>
+                            {activeTopic ? `Filtered: ${activeTopic}` : 'Topic Filters'}
+                        </button>
+                    )}
                     <div className="topic-filters-selection" style={{ display: isFilterVisible ? 'grid' : 'none' }}>
                         {topics.map((topic) => (
                             <button
@@ -182,7 +188,7 @@ export default function Dashboard() {
                     {selectedNote ? (
                         <JournalViewer note={selectedNote} onBack={() => setSelectedNote(null)} onUpdate={handleUpdate} />
                     ) : (
-                        <p className="no-note-selected">Select a note to view it here.</p>
+                        <p className="no-note-selected">Pick something from the left to read it here.</p>
                     )}
                 </div>
             </div>

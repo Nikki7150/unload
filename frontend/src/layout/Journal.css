@@ -52,3 +52,21 @@
     pointer-events: none;
     z-index: 2;
 }
+
+@media (max-width: 900px) {
+    .journal-cover {
+        height: 95vh;
+        width: 98vw;
+        border-radius: 20px;
+    }
+
+    .journal {
+        grid-template-columns: 1fr;
+        border-radius: 20px;
+        overflow-y: auto;
+    }
+
+    .journal::before {
+        display: none; /* the spine only makes sense with two visible pages side by side */
+    }
+}

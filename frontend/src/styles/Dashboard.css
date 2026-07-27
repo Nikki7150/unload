@@ -56,7 +56,7 @@
 
 .search-input:focus {
     outline: none;
-    border-bottom-color: #bc4d4d;
+    border-bottom-color: #c25362;
 }
 
 .search-button {
@@ -81,7 +81,7 @@
 }
 
 .journal-dashboard .left-page p {
-    color: #bc4d4d;
+    color: #c25362;
     margin: 10px;
     margin-right: auto;
     margin-left: auto;
@@ -320,4 +320,48 @@
     font-size: 16px;
     padding: 10px;
     margin-left: 10px;
+}
+
+@media (max-width: 900px) {
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .journal-dashboard {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+    }
+
+    .journal-dashboard .right-page {
+        width: 100%;
+        padding-left: 0;
+        margin-top: 20px;
+        border-top: 1px solid #625151;
+        padding-top: 20px;
+    }
+
+    .notes-list {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+
+    .note-item {
+        width: 100%;
+    }
+
+    .journal-viewer-journal,
+    .journal-viewer-journal-input {
+        height: auto;
+        max-height: 50vh;
+    }
+
+    .journal-viewer-journal-input {
+        column-count: 1;
+    }
+
+    .topic-filters-selection {
+        grid-template-rows: repeat(3, auto);
+        left: 0;
+        width: 100%;
+    }
 }

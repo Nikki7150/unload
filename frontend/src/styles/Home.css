@@ -5,26 +5,7 @@
     width: 100%;
 }
 
-.toggle-entry-btn {
-    background-color: #da7784;
-    border: none;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    cursor: pointer;
-    position: fixed;
-    right: 10.5%;
-    top: 31%;
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-}
-
-.logout-button {
+.toggle-entry-btn, .logout-button {
     background-color: #c25362;
     border: none;
     color: white;
@@ -34,13 +15,20 @@
     display: inline-block;
     font-size: 16px;
     cursor: pointer;
-    position: fixed;
-    right: 10.5%;
-    top: 11%;
+    position: absolute;
+    right: -40px;
     writing-mode: vertical-rl;
     text-orientation: upright;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
+}
+
+.logout-button {
+    top: 5%;
+}
+
+.toggle-entry-btn {
+    top: 25%;
 }
 
 .home-container {
@@ -63,7 +51,7 @@
 .title-row {
     padding: 30px 30px 10px 30px;
 }
-
+/*
 .book-text {
     flex: 1;
     column-count: 2;
@@ -72,7 +60,34 @@
     line-height: 1.9;
     outline: none;
     height: 80vh;
+}*/
+
+.book-text {
+    column-width: 420px;
+    column-gap: 60px;
+    column-fill: auto;
+    height: 700px;
+    line-height: 1.9;
+    outline: none;
+    overflow: auto;
+    scrollbar-gutter: stable;
 }
+
+.book-text::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 8px;
+    height: 8px;
+}
+
+.book-text::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(99, 2, 2, 0.993);
+}
+
+.book-text::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, .1);
+}
+
 .title-row input {
     width: 100%;
     font-size: 22px;
@@ -90,7 +105,7 @@
 }
 
 .submit-btn {
-    background-color: #da7784;
+    background-color: #c25362;
     color: white;
     border: none;
     border-radius: 5px;
@@ -102,4 +117,28 @@
     position: absolute;
     bottom: 0;
     right: 0;
+}
+
+@media (max-width: 900px) {
+    .book-text {
+        column-width: 100%;
+        column-gap: 0;
+        height: 60vh;
+    }
+
+    .toggle-entry-btn,
+    .logout-button {
+        writing-mode: horizontal-tb;
+        text-orientation: initial;
+        position: static;
+        width: 100%;
+        border-radius: 5px;
+        margin-bottom: 5px;
+    }
+
+    .submit-btn {
+        position: static;
+        width: 100%;
+        margin-top: 10px;
+    }
 }
