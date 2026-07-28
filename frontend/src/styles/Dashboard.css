@@ -35,6 +35,7 @@
     font-size: 2rem;
     margin: 0;
     margin-right: 20px;
+    font-family: var(--journal-font);
 }
 
 .search-form {
@@ -52,6 +53,7 @@
     margin-right: 10px;
     background-color: transparent;
     width: 250px;
+    font-family: var(--input-font);
 }
 
 .search-input:focus {
@@ -81,7 +83,7 @@
 }
 
 .journal-dashboard .left-page p {
-    color: #c25362;
+    color: var(--light-red);
     margin: 10px;
     margin-right: auto;
     margin-left: auto;
@@ -112,6 +114,8 @@
     width: 150px;
     height: 150px;
     position: relative;
+    font-family: var(--card-font);
+    font-size: 20px;
 }
 
 .note-item:hover {
@@ -131,7 +135,7 @@
 
 .note-title {
     margin: 0;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     flex-grow: 1;
     overflow-wrap: break-word;
     hyphens: auto;
@@ -139,8 +143,8 @@
 
 .delete-button {
     background-color: transparent;
-    color: #c25362;
-    border: 1px solid #c25362;
+    color: var(--light-red);
+    border: 1px solid var(--light-red);
     padding: 5px;
     cursor: pointer;
     font-size: .7rem;
@@ -246,6 +250,7 @@
     font-size: 2rem;
     margin: 0;
     margin-bottom: 10px;
+    font-family: var(--title-font);
 }
 
 .edit-button {
@@ -273,6 +278,8 @@
     overflow-y: scroll;
     overflow-wrap: break-word;
     hyphens: auto;
+    font-family: var(--text-font);
+    font-size: 20px;
 }
 
 .journal-edit-form {
@@ -284,13 +291,14 @@
 
 .journal-viewer-title-input {
     width: 100%;
-    font-size: 22px;
+    font-size: 32px;
     border: none;
     background: transparent;
     outline: none;
     border-bottom: 1px solid #d8ccb2;
     padding-bottom: 5px;
     margin-bottom: 10px;
+    font-family: var(--title-font);
 }
 
 .journal-viewer-journal-input {
@@ -302,6 +310,8 @@
     outline: none;
     overflow-y: scroll;
     resize: none;
+    font-family: var(--text-font);
+    font-size: 20px;
 }
 
 .journal-edit-buttons {

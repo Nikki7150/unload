@@ -1,4 +1,26 @@
+:root {
+    --dark-red: #950000;
+    --page-color: #eae6dd;
+    --light-red: #c25362;
+    --almost-black: #333;
+    --buttons-font: 'Syne Mono', monospace;
+    --title-font: 'Lacquer', system-ui;
+    --text-font: 'Shadows into Light', cursive;
+    --journal-font: 'Unica One', sans-serif;
+    --card-font: 'Sue Ellen Francisco', cursive;
+    --input-font: 'Edu VIC WA NT Hand', cursive;
+}
+
 /*place journal cover in the center of the screen*/
+button {
+    font-family: var(--buttons-font) !important;
+    background-color: var(--light-red);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
 .journal-container {
     display: flex;
     justify-content: center;

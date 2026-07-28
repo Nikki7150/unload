@@ -6,7 +6,7 @@
 }
 
 .toggle-entry-btn, .logout-button {
-    background-color: #c25362;
+    background-color: var(--light-red);
     border: none;
     color: white;
     padding: 10px;
@@ -19,6 +19,7 @@
     right: -40px;
     writing-mode: vertical-rl;
     text-orientation: upright;
+    border-radius: 0;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
@@ -71,6 +72,8 @@
     outline: none;
     overflow: auto;
     scrollbar-gutter: stable;
+    font-family: var(--text-font);
+    font-size: 20px;
 }
 
 .book-text::-webkit-scrollbar {
@@ -90,12 +93,13 @@
 
 .title-row input {
     width: 100%;
-    font-size: 22px;
+    font-size: 32px;
     border: none;
     background: transparent;
     outline: none;
     border-bottom: 1px solid #d8ccb2;
     padding-bottom: 10px;
+    font-family: var(--title-font);
 }
 
 .book-text:empty::before {
@@ -105,7 +109,7 @@
 }
 
 .submit-btn {
-    background-color: #c25362;
+    background-color: var(--light-red);
     color: white;
     border: none;
     border-radius: 5px;
@@ -115,8 +119,8 @@
     width: 100px;
     height: 40px;
     position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: 10px;
+    right: 10px;
 }
 
 @media (max-width: 900px) {

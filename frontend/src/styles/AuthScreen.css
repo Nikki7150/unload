@@ -36,6 +36,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-family: var(--title-font);
 }
 
 .login-screen .right-page {
@@ -46,6 +47,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-family: var(--journal-font);
 }
 
 .login-form {
@@ -63,6 +65,7 @@
     border: none;
     border-bottom: 1px solid #785858;
     font-size: 16px;
+    font-family: var(--input-font);
 }
 
 .login-form button {
@@ -121,6 +124,7 @@
     border: none;
     border-bottom: 1px solid #785858;
     font-size: 16px;
+    font-family: var(--input-font);
 }
 
 .signup-form button {
