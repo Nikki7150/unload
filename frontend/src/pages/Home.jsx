@@ -1,5 +1,5 @@
 import useAuthStore from "../store/authStore";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Dashboard from "./Dashboard";
 import "../styles/Home.css";
 
@@ -100,3 +100,31 @@ export default function Home() {
         </div>
     );
 }
+
+import gsap from "gsap";
+
+export function TestBox() {
+    const boxRef = useRef(null);
+    useEffect(() => {
+        gsap.to(boxRef.current, {
+            rotateY: -180,
+            duration: 1.5, 
+            ease: 'power2.inOut'
+        })
+    }, [])
+    return (
+        <div style={{ perspective: 1200, margin: 50 }}>
+            <div
+                ref={boxRef}
+                style={{
+                    width: 150,
+                    height: 200,
+                    background: 'red',
+                    transformOrigin: 'left center',
+                    backfaceVisibility: 'hidden'
+                }}
+            ></div>
+        </div>
+    );
+}
+
