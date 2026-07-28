@@ -37,12 +37,9 @@
 }
 
 .book-text-left ,.book-text-right {
-    column-width: 420px;
-    column-gap: 60px;
-    column-fill: auto;
     line-height: 1.9;
     outline: none;
-    overflow: auto;
+    overflow: hidden;
     scrollbar-gutter: stable;
     font-family: var(--text-font);
     font-size: 20px;

@@ -68,6 +68,60 @@ export default function Home() {
         }
     };
 
+    const findOverflowSplit = (fullText, referenceEl) => {
+        const words = fullText.split(' ');
+        const style = getComputedStyle(referenceEl);
+        const tester = document.createElement('div');
+        tester.style.position = 'absolute';
+        tester.style.visibility = 'hidden';
+        tester.style.width = style.width;
+        tester.style.padding = style.padding;
+        tester.style.fontFamily = style.fontFamily;
+        tester.style.fontSize = style.fontSize;
+        tester.style.lineHeight = style.lineHeight;
+        tester.style.whiteSpace = 'pre-wrap';
+        tester.style.wordWrap = 'break-word';
+        document.body.appendChild(tester);
+        let fitWords = [];
+        let splitIndex = words.length;
+        for (let i = 0; i < words.length; i++) {
+            tester.innerText = words.slice(0, i + 1).join(' ');
+            if (tester.scrollHeight > referenceEl.clientHeight) {
+                splitIndex = i;
+                break;
+            }
+            fitWords.push(words[i]);
+        }
+        document.body.removeChild(tester);
+        const fits = words.slice(0, splitIndex).join(' ');
+        const overflow = words.slice(splitIndex).join(' ');
+        return { fits, overflow };
+    };
+
+    const handleLeftInput = (e) => {
+        const el = leftRef.current;
+        const currentText = el.innerText;
+        if (el.scrollHeight > el.clientHeight) {
+            const { fits, overflow } = findOverflowSplit(currentText, el);
+            setLeftText(fits);
+            el.innerText = fits;
+            const newRightText = (overflow + ' ' + rightRef.current.innerText).trim();
+            setRightText(newRightText);
+            rightRef.current.innerText = newRightText;
+            setTimeout(() => {
+                rightRef.current.focus();
+                const range = document.createRange();
+                const sel = window.getSelection();
+                range.selectNodeContents(rightRef.current);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }, 0);
+        } else {
+            setLeftText(currentText);
+        }
+    };
+
     return (
         <div className="home-root">
             <button className="logout-button" onClick={logout}>Logout</button>
@@ -89,7 +143,7 @@ export default function Home() {
                                 contentEditable="true"
                                 ref={leftRef}
                                 placeholder="Dump your thoughts here..."
-                                onInput={handleBookTextInput}
+                                onInput={handleLeftInput}
                                 suppressContentEditableWarning={true}
                             ></div>
                         </div>
@@ -99,7 +153,6 @@ export default function Home() {
                                 contentEditable="true"
                                 ref={rightRef}
                                 placeholder="Dump your thoughts here..."
-                                onInput={handleBookTextInput}
                                 suppressContentEditableWarning={true}
                             ></div>
                             <button className="submit-btn" onClick={handleSubmit} disabled={isSubmitting}>
