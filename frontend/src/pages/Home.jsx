@@ -15,12 +15,17 @@ export default function Home() {
     const bookTextRef = useRef(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const [leftText, setLeftText] = useState('');
+    const [rightText, setRightText] = useState('');
+    const leftRef = useRef(null);
+    const rightRef = useRef(null);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setSuccess(false);
         setIsSubmitting(true);
-        const journalEntry = bookTextRef.current.textContent;
+        const journalEntry = leftRef.current.textContent + '\n' + rightRef.current.textContent;
         try {
             const response = await fetch('http://127.0.0.1:8000/notes', {
                 method: 'POST',
@@ -36,7 +41,8 @@ export default function Home() {
             const data = await response.json();
             setLastTopic(data.topic);
             setTitle('');
-            bookTextRef.current.textContent = '';
+            leftRef.current.textContent = '';
+            rightRef.current.textContent = '';
             setSuccess(true);
         } catch (error) {
             setError('Something went wrong. Please try again.');
@@ -50,9 +56,7 @@ export default function Home() {
     const handleBookTextInput = () => {
         const el = bookTextRef.current;
         if (el.scrollHeight > el.clientHeight) {
-            // this keystroke pushed it past the visible page — revert it
             el.innerHTML = lastValidContent.current;
-            // move cursor to the end so typing doesn't jump somewhere weird
             const range = document.createRange();
             const sel = window.getSelection();
             range.selectNodeContents(el);
@@ -71,27 +75,39 @@ export default function Home() {
             <div className="home-container">
                 {isEntry ? (
                     <div className="entry-container">
-                        <div className="title-row">
-                            <input
-                                type="text"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                                placeholder="Title your thoughts..."
-                            />
+                        <div className="home-left-page" >
+                            <div className="title-row">
+                                <input
+                                    type="text"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                    placeholder="Title your thoughts..."
+                                />
+                            </div>
+                            <div
+                                className="book-text-left"
+                                contentEditable="true"
+                                ref={leftRef}
+                                placeholder="Dump your thoughts here..."
+                                onInput={handleBookTextInput}
+                                suppressContentEditableWarning={true}
+                            ></div>
                         </div>
-                        <div
-                            className="book-text"
-                            contentEditable="true"
-                            ref={bookTextRef}
-                            placeholder="Dump your thoughts here..."
-                            onInput={handleBookTextInput}
-                            suppressContentEditableWarning={true}
-                        ></div>
-                        <button className="submit-btn" onClick={handleSubmit} disabled={isSubmitting}>
-                            {isSubmitting ? 'Saving...' : 'Submit'}
-                        </button>
-                        {error && <p className="error-message">{error}</p>}
-                        {success && <p className="success-message">Entry saved!</p>}
+                        <div className="home-right-page" >
+                            <div
+                                className="book-text-right"
+                                contentEditable="true"
+                                ref={rightRef}
+                                placeholder="Dump your thoughts here..."
+                                onInput={handleBookTextInput}
+                                suppressContentEditableWarning={true}
+                            ></div>
+                            <button className="submit-btn" onClick={handleSubmit} disabled={isSubmitting}>
+                                {isSubmitting ? 'Saving...' : 'Submit'}
+                            </button>
+                            {error && <p className="error-message">{error}</p>}
+                            {success && <p className="success-message">Entry saved!</p>}
+                        </div>
                     </div>
                 ) : (
                     <Dashboard />
@@ -103,7 +119,7 @@ export default function Home() {
 
 import gsap from "gsap";
 
-export function TestBox() {
+function TestBox() {
     const boxRef = useRef(null);
     useEffect(() => {
         gsap.to(boxRef.current, {

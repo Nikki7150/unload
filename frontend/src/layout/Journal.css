@@ -43,10 +43,9 @@ button {
 }
 
 .journal {
-    width: 95%;
-    height: 91%;
-    background-color: #eae6dd;
-    padding: 20px;
+    height: min(865px, 92vw);
+    width: min(1270px, 96vw);
+    background-color: var(--page-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 40px;
     display: grid;

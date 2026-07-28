@@ -32,48 +32,31 @@
     top: 25%;
 }
 
-.home-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    position: relative;
-    height: 100%;
-    width: 100%;
-    align-items: stretch;
-}
-
-.entry-container {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-}
-
 .title-row {
-    padding: 30px 30px 10px 30px;
+    padding: 30px 30px 0 30px;
 }
-/*
-.book-text {
-    flex: 1;
-    column-count: 2;
-    column-gap: 80px;
-    padding: 10px 30px 40px 30px;
-    line-height: 1.9;
-    outline: none;
-    height: 80vh;
-}*/
 
-.book-text {
+.book-text-left ,.book-text-right {
     column-width: 420px;
     column-gap: 60px;
     column-fill: auto;
-    height: 700px;
     line-height: 1.9;
     outline: none;
     overflow: auto;
     scrollbar-gutter: stable;
     font-family: var(--text-font);
     font-size: 20px;
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-right: 10px;
+}
+
+.book-text-left {
+    height: 750px;
+}
+
+.book-text-right {
+    height: 780px;
 }
 
 .book-text::-webkit-scrollbar {
@@ -102,7 +85,7 @@
     font-family: var(--title-font);
 }
 
-.book-text:empty::before {
+.book-text-left:empty::before, .book-text-right:empty::before {
     content: "Start writing on the left page...";
     color: #9C917A;
     font-style: italic;
@@ -120,7 +103,7 @@
     height: 40px;
     position: absolute;
     bottom: 10px;
-    right: 10px;
+    right: 20px;
 }
 
 @media (max-width: 900px) {
@@ -145,4 +128,42 @@
         width: 100%;
         margin-top: 10px;
     }
+}
+
+.home-container {
+    grid-column: 1 / -1;
+    height: 100%;
+    width: 100%;
+}
+
+.entry-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.home-left-page {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--page-color);
+    border-radius: 0;
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
+}
+
+.home-right-page {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--page-color);
+    border-radius: 0;
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
 }
