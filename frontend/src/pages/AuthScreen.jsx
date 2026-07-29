@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, useRef, useEffect, forwardRef } from "react";
 import useAuthStore from "../store/authStore";
 import "../styles/AuthScreen.css";
+import gsap from "gsap";
+import Home from "./Home";
 
-export function Login() {
+export const Login = forwardRef(function Login({ onAuthSuccess }, rightPageRef) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
-    const login = useAuthStore((state) => state.login);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,7 +22,7 @@ export function Login() {
                 throw new Error('Login failed');
             }
             const data = await response.json();
-            login(data.access_token);
+            onAuthSuccess(data.access_token);
         } catch (error) {
             setError('Something went wrong. Please try again.');
         }
@@ -35,7 +36,7 @@ export function Login() {
                     <p>Login to continue</p>
                 </div>
             </div>
-            <div className="right-page">
+            <div className="right-page" ref={rightPageRef}>
                 <div className="login-form-container">
                     <h1>Login</h1>
                     <form className="login-form" onSubmit={handleSubmit}>
@@ -60,9 +61,9 @@ export function Login() {
             </div>
         </div>
     )
-}
+})
 
-export function Signup() {
+export const Signup = forwardRef(function Signup({ onAuthSuccess }, rightPageRef) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
@@ -104,7 +105,7 @@ export function Signup() {
                     <p>Create an account to get started</p>
                 </div>
             </div>
-            <div className="right-page">
+            <div className="right-page" ref={rightPageRef}>
                 <div className="signup-form-container">
                     <h1>Signup</h1>
                     <form className="signup-form" onSubmit={handleSubmit}>
@@ -136,16 +137,58 @@ export function Signup() {
             </div>
         </div>
     )
-}
+})
 
 export default function AuthScreen() {
     const [isLogin, setIsLogin] = useState(true);
+    const [loggingIn, setLoggingIn] = useState(false);
+    const [pendingToken, setPendingToken] = useState(null);
+    const restRightPageRef = useRef(null);
+    const login = useAuthStore((state) => state.login);
+
+    const handleAuthSuccess = (token) => {
+        setPendingToken(token);
+        setLoggingIn(true);
+    };
+
+    useEffect(() => {
+        if (!loggingIn) return;
+        const target = restRightPageRef.current;
+        if (!target) return;
+        const tl = gsap.timeline({
+            onComplete: () => {
+                login(pendingToken);
+            }
+        });
+        tl.to(target, { 
+            duration: 0.5, 
+            rotateY: -180, 
+            ease: "power2.inOut" 
+        });
+        return () => {
+            tl.kill();
+        };
+    }, [loggingIn]);
+
     return (
-        <div className="AuthScreen">
-            {isLogin ? <Login /> : <Signup />}
-            <button className="toggle-auth-btn" onClick={() => setIsLogin(!isLogin)}>
-                {isLogin ? 'Don\'t have an account? Signup' : 'Already have an account? Login'}
-            </button>
+        <div className="spread-wrapper">
+            {loggingIn && (
+                <div className="spread-layer-under">
+                    <Home />
+                </div>
+            )}
+            <div className="spread-layer-under">
+                <div className="AuthScreen">
+                    {isLogin ? (
+                        <Login ref={restRightPageRef} onAuthSuccess={handleAuthSuccess} />
+                    ) : (
+                        <Signup ref={restRightPageRef} onAuthSuccess={handleAuthSuccess} />
+                    )}
+                    <button className="toggle-auth-button" onClick={() => setIsLogin(!isLogin)}>
+                        {isLogin ? "Don't have an account? Signup" : "Already have an account? Login"}
+                    </button>
+                </div>
+            </div>
         </div>
     )
 }

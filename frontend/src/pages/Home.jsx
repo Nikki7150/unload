@@ -166,7 +166,7 @@ export default function Home() {
 
     useEffect(() => {
         if (!loggingOut) return;
-        const target = turningPageRef.current;
+        const target = restLeftPageRef.current;
         if (!target) return;
         const tl = gsap.timeline({
             onComplete: () => {
@@ -187,7 +187,7 @@ export default function Home() {
         <div className="home-root">
             <button 
                 className="logout-btn" 
-                onClick={logout}
+                onClick={handleLogoutClick}
             >
                 Logout</button>
             <button 
@@ -199,6 +199,11 @@ export default function Home() {
             </button>
             <div className="home-container">
                 <div className="spread-wrapper">
+                    {loggingOut && (
+                        <div className="spread-layer-under">
+                            <AuthScreen />
+                        </div>
+                    )}
                     <div className="spread-layer-under">
                         {underView === 'entry' ? (
                             <div className="entry-container">
@@ -236,7 +241,7 @@ export default function Home() {
                                 </div>
                             </div>
                         ) : (
-                            <Dashboard ref={turningPageRef} />
+                            <Dashboard ref={restLeftPageRef} />
                         )}
                     </div>
                     {transitioning && (
@@ -262,11 +267,6 @@ export default function Home() {
                             ) : (
                                 <Dashboard ref={turningPageRef} />
                             )}
-                        </div>
-                    )}
-                    {loggingOut && (
-                        <div className="spread-layer-under">
-                            <AuthScreen />
                         </div>
                     )}
                 </div>

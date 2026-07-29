@@ -221,3 +221,8 @@
     transform-origin: right center;
     backface-visibility: hidden;
 }
+
+.home-left-page {
+    transform-origin: right center;
+    backface-visibility: hidden;
+}

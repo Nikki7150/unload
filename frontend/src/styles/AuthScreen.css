@@ -5,7 +5,7 @@
     width: 100%;
 }
 
-.toggle-auth-btn {
+.toggle-auth-button {
     position: absolute;
     bottom: 10px;
     right: 13%;
@@ -192,4 +192,22 @@
         position: static;
         margin-top: 20px;
     }
+}
+
+.right-page {
+    transform-origin: left center;
+    backface-visibility: hidden;
+}
+
+.spread-wrapper {
+    grid-column: 1 / -1;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    perspective: 2000px;
+}
+
+.spread-layer-under {
+    position: absolute;
+    inset: 0;
 }
