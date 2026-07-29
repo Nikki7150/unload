@@ -5,7 +5,7 @@
     width: 100%;
 }
 
-.toggle-entry-btn, .logout-button {
+.toggle-entry-btn, .logout-btn {
     background-color: var(--light-red);
     border: none;
     color: white;
@@ -16,20 +16,40 @@
     font-size: 16px;
     cursor: pointer;
     position: absolute;
-    right: -40px;
     writing-mode: vertical-rl;
     text-orientation: upright;
+}
+
+.logout-btn {
+    left: -40px;
+    top: 5%;
+    border-radius: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.logout-btn-right {
+    right: -40px;
+    left: 0;
     border-radius: 0;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
 
-.logout-button {
-    top: 5%;
+.toggle-entry-btn {
+    right: -40px;
+    top: 23%;
+    border-radius: 0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
-.toggle-entry-btn {
-    top: 25%;
+.toggle-entry-btn-left {
+    right: auto;
+    left: -40px;
+    border-radius: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 .title-row {
@@ -54,20 +74,21 @@
 
 .book-text-right {
     height: 780px;
+    overflow-y: auto !important;
 }
 
-.book-text::-webkit-scrollbar {
+.book-text-right::-webkit-scrollbar {
     -webkit-appearance: none;
     width: 8px;
     height: 8px;
 }
 
-.book-text::-webkit-scrollbar-thumb {
+.book-text-right::-webkit-scrollbar-thumb {
     border-radius: 4px;
     background-color: rgba(99, 2, 2, 0.993);
 }
 
-.book-text::-webkit-scrollbar-track {
+.book-text-right::-webkit-scrollbar-track {
     background-color: rgba(0, 0, 0, .1);
 }
 
@@ -163,4 +184,32 @@
     border-radius: 0;
     border-top-right-radius: 40px;
     border-bottom-right-radius: 40px;
+}
+
+.spread-wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    perspective: 2000px;
+}
+
+.spread-layer-under {
+    position: absolute;
+    inset: 0;
+}
+
+.spread-layer-top {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+}
+
+.home-right-page {
+    transform-origin: left center;
+    backface-visibility: hidden;
+}
+
+.left-page {
+    transform-origin: right center;
+    backface-visibility: hidden;
 }

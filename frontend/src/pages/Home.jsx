@@ -2,6 +2,8 @@ import useAuthStore from "../store/authStore";
 import { useState, useRef, useEffect } from "react";
 import Dashboard from "./Dashboard";
 import "../styles/Home.css";
+import gsap from "gsap";
+import AuthScreen from "./AuthScreen";
 
 export default function Home() {
     const token = useAuthStore((state) => state.token);
@@ -15,10 +17,46 @@ export default function Home() {
     const bookTextRef = useRef(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    // State for left and right text areas
     const [leftText, setLeftText] = useState('');
     const [rightText, setRightText] = useState('');
     const leftRef = useRef(null);
     const rightRef = useRef(null);
+
+    // States for page turn animation
+    const [view, setView] = useState('entry');
+    const [transitioning, setTransitioning] = useState(false);
+    const [direction, setDirection] = useState(null);
+    const turningPageRef = useRef(null);
+    const restLeftPageRef = useRef(null);
+    const [loggingOut, setLoggingOut] = useState(false);
+
+    const handleToggle = () => {
+        setDirection(view === 'entry' ? 'forward' : 'backward');
+        setTransitioning(true);
+    };
+
+    useEffect(() => {
+        if (!transitioning) return;
+        const target = turningPageRef.current;
+        if (!target) return;
+        const tl = gsap.timeline({
+            onComplete: () => {
+                setView(v => (v === 'entry' ? 'dashboard' : 'entry'));
+                setTransitioning(false);
+            }
+        });
+        tl.to(target, {
+            rotateY: direction === 'forward' ? -180 : 180,
+            duration: 0.6,
+            ease: "power2.inOut",
+        });
+        return () => {
+            tl.kill();
+        };
+    }, [transitioning, direction]);
+
+    const underView = transitioning ? (view === 'entry' ? 'dashboard' : 'entry') : view;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -122,78 +160,117 @@ export default function Home() {
         }
     };
 
+    const handleLogoutClick = () => {
+        setLoggingOut(true);
+    };
+
+    useEffect(() => {
+        if (!loggingOut) return;
+        const target = turningPageRef.current;
+        if (!target) return;
+        const tl = gsap.timeline({
+            onComplete: () => {
+                logout();
+            }
+        });
+        tl.to(target, {
+            rotateY: 180,
+            duration: 0.6,
+            ease: "power2.inOut",
+        });
+        return () => {
+            tl.kill();
+        };
+    }, [loggingOut]);
+
     return (
         <div className="home-root">
-            <button className="logout-button" onClick={logout}>Logout</button>
-            <button className="toggle-entry-btn" onClick={() => setIsEntry(!isEntry)}>{isEntry ? 'Journals' : 'Entry'}</button>
+            <button 
+                className="logout-btn" 
+                onClick={logout}
+                style={{ visibility: (transitioning || loggingOut) ? 'hidden' : 'visible' }}>
+                Logout</button>
+            <button 
+                className={`toggle-entry-btn ${view === 'dashboard' ? 'toggle-entry-btn-left' : ''}`}
+                onClick={handleToggle}
+                style={{ visibility: transitioning ? 'hidden' : 'visible' }}
+            >
+                    {view === 'entry' ? 'Journals' : 'Entry'}
+                </button>
             <div className="home-container">
-                {isEntry ? (
-                    <div className="entry-container">
-                        <div className="home-left-page" >
-                            <div className="title-row">
-                                <input
-                                    type="text"
-                                    value={title}
-                                    onChange={(e) => setTitle(e.target.value)}
-                                    placeholder="Title your thoughts..."
-                                />
+                <div className="spread-wrapper">
+                    <div className="spread-layer-under">
+                        {underView === 'entry' ? (
+                            <div className="entry-container">
+                                <div className="home-left-page" ref={restLeftPageRef}>
+                                    <div className="title-row">
+                                        <input
+                                            type="text"
+                                            value={title}
+                                            onChange={(e) => setTitle(e.target.value)}
+                                            placeholder="Title your thoughts..."
+                                        />
+                                    </div>
+                                    <div
+                                        className="book-text-left"
+                                        contentEditable="true"
+                                        ref={leftRef}
+                                        placeholder="Dump your thoughts here..."
+                                        onInput={handleLeftInput}
+                                        suppressContentEditableWarning={true}
+                                    ></div>
+                                </div>
+                                <div className="home-right-page" >
+                                    <div
+                                        className="book-text-right"
+                                        contentEditable="true"
+                                        ref={rightRef}
+                                        placeholder="Dump your thoughts here..."
+                                        suppressContentEditableWarning={true}
+                                    ></div>
+                                    <button className="submit-btn" onClick={handleSubmit} disabled={isSubmitting}>
+                                        {isSubmitting ? 'Saving...' : 'Submit'}
+                                    </button>
+                                    {error && <p className="error-message">{error}</p>}
+                                    {success && <p className="success-message">Entry saved!</p>}
+                                </div>
                             </div>
-                            <div
-                                className="book-text-left"
-                                contentEditable="true"
-                                ref={leftRef}
-                                placeholder="Dump your thoughts here..."
-                                onInput={handleLeftInput}
-                                suppressContentEditableWarning={true}
-                            ></div>
-                        </div>
-                        <div className="home-right-page" >
-                            <div
-                                className="book-text-right"
-                                contentEditable="true"
-                                ref={rightRef}
-                                placeholder="Dump your thoughts here..."
-                                suppressContentEditableWarning={true}
-                            ></div>
-                            <button className="submit-btn" onClick={handleSubmit} disabled={isSubmitting}>
-                                {isSubmitting ? 'Saving...' : 'Submit'}
-                            </button>
-                            {error && <p className="error-message">{error}</p>}
-                            {success && <p className="success-message">Entry saved!</p>}
-                        </div>
+                        ) : (
+                            <Dashboard ref={turningPageRef} />
+                        )}
                     </div>
-                ) : (
-                    <Dashboard />
-                )}
+                    {transitioning && (
+                        <div className="spread-layer-top">
+                            {view === 'entry' ? (
+                                <div className="entry-container">
+                                    <div className="home-left-page">
+                                        <div className="title-row">
+                                            <input
+                                                type="text"
+                                                placeholder="Title your thoughts..."
+                                                value={title}
+                                                readOnly
+                                            />
+                                        </div>
+                                        <div className="book-text-left">{leftText}</div>
+                                    </div>
+                                    <div className="home-right-page" ref={turningPageRef}>
+                                        <div className="book-text-right">{rightText}</div>
+                                        <button className="submit-btn">Submit</button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <Dashboard ref={turningPageRef} />
+                            )}
+                        </div>
+                    )}
+                    {loggingOut && (
+                        <div className="spread-layer-under">
+                            <AuthScreen />
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
 }
-
-import gsap from "gsap";
-
-function TestBox() {
-    const boxRef = useRef(null);
-    useEffect(() => {
-        gsap.to(boxRef.current, {
-            rotateY: -180,
-            duration: 1.5, 
-            ease: 'power2.inOut'
-        })
-    }, [])
-    return (
-        <div style={{ perspective: 1200, margin: 50 }}>
-            <div
-                ref={boxRef}
-                style={{
-                    width: 150,
-                    height: 200,
-                    background: 'red',
-                    transformOrigin: 'left center',
-                    backfaceVisibility: 'hidden'
-                }}
-            ></div>
-        </div>
-    );
-}
-

@@ -11,7 +11,6 @@ export function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-
         try {
             const response = await fetch('http://127.0.0.1:8000/login', {
                 method: 'POST',
@@ -69,7 +68,6 @@ export function Signup() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-
         try {
             const signupResponse = await fetch('http://127.0.0.1:8000/signup', {
                 method: 'POST',
@@ -79,7 +77,6 @@ export function Signup() {
             if (!signupResponse.ok) {
                 throw new Error('Signup failed');
             }
-
             const loginResponse = await fetch('http://127.0.0.1:8000/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -88,7 +85,6 @@ export function Signup() {
             if (!loginResponse.ok) {
                 throw new Error('Login after signup failed');
             }
-
             const data = await loginResponse.json();
             login(data.access_token);
         } catch (error) {

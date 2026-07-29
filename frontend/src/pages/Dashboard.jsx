@@ -3,8 +3,9 @@ import useAuthStore from "../store/authStore";
 import "../styles/Dashboard.css";
 import JournalViewer from "./JournalViewer";
 import { FaTrash, FaSearch, FaTimes } from "react-icons/fa";
+import { forwardRef } from "react";
 
-export default function Dashboard() {
+const Dashboard = forwardRef(function Dashboard(props, leftPageRef) {
     const [notes, setNotes] = useState([]);
     const [error, setError] = useState(null);
     const token = useAuthStore((state) => state.token);
@@ -118,7 +119,7 @@ export default function Dashboard() {
     return (
         <div className="dashboard">
             <div className="journal-dashboard">
-                <div className="left-page">
+                <div className="left-page" ref={leftPageRef}>
                     {error && <p>{error}</p>}
                     <div className="dashboard-header">
                         <h1 className="dashboard-title">My Journals</h1>
@@ -194,4 +195,6 @@ export default function Dashboard() {
             </div>
         </div>
     )
-}
+});
+
+export default Dashboard;
