@@ -5,7 +5,7 @@
     width: 100%;
 }
 
-.toggle-entry-btn, .logout-btn {
+.toggle-entry-btn, .logout-btn, .settings-btn {
     background-color: var(--light-red);
     border: none;
     color: white;
@@ -50,6 +50,14 @@
     border-radius: 0;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
+}
+
+.settings-btn {
+    right: -40px;
+    top: 46%;
+    border-radius: 0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .title-row {

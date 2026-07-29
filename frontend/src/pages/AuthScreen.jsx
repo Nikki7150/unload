@@ -30,29 +30,33 @@ export function Login() {
     return (
         <div className="login-screen">
             <div className="left-page">
-                <h1>Welcome Back!</h1>
-                <p>Login to continue</p>
+                <div className="welcome-message">
+                    <h1>Welcome Back!</h1>
+                    <p>Login to continue</p>
+                </div>
             </div>
             <div className="right-page">
-                <h1>Login</h1>
-                <form className="login-form" onSubmit={handleSubmit}>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Email"
-                        required
-                    />
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Password"
-                        required
-                    />
-                    {error && <p>{error}</p>}
-                    <button type="submit">Login</button>
-                </form>
+                <div className="login-form-container">
+                    <h1>Login</h1>
+                    <form className="login-form" onSubmit={handleSubmit}>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Email"
+                            required
+                        />
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Password"
+                            required
+                        />
+                        {error && <p>{error}</p>}
+                        <button type="submit">Login</button>
+                    </form>
+                </div>
             </div>
         </div>
     )
@@ -95,36 +99,40 @@ export function Signup() {
     return (
         <div className="signup-screen">
             <div className="left-page">
-                <h1>Welcome!</h1>
-                <p>Create an account to get started</p>
+                <div className="welcome-message">
+                    <h1>Welcome!</h1>
+                    <p>Create an account to get started</p>
+                </div>
             </div>
             <div className="right-page">
-                <h1>Signup</h1>
-                <form className="signup-form" onSubmit={handleSubmit}>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Email"
-                        required
-                    />
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        placeholder="Username"
-                        required
-                    />
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Password"
-                        required
-                    />
-                    {error && <p>{error}</p>}
-                    <button type="submit">Signup</button>
-                </form>
+                <div className="signup-form-container">
+                    <h1>Signup</h1>
+                    <form className="signup-form" onSubmit={handleSubmit}>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Email"
+                            required
+                        />
+                        <input
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="Username"
+                            required
+                        />
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Password"
+                            required
+                        />
+                        {error && <p>{error}</p>}
+                        <button type="submit">Signup</button>
+                    </form>
+                </div>
             </div>
         </div>
     )

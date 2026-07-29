@@ -188,7 +188,7 @@ export default function Home() {
             <button 
                 className="logout-btn" 
                 onClick={logout}
-                style={{ visibility: (transitioning || loggingOut) ? 'hidden' : 'visible' }}>
+            >
                 Logout</button>
             <button 
                 className={`toggle-entry-btn ${view === 'dashboard' ? 'toggle-entry-btn-left' : ''}`}
@@ -196,7 +196,7 @@ export default function Home() {
                 style={{ visibility: transitioning ? 'hidden' : 'visible' }}
             >
                     {view === 'entry' ? 'Journals' : 'Entry'}
-                </button>
+            </button>
             <div className="home-container">
                 <div className="spread-wrapper">
                     <div className="spread-layer-under">

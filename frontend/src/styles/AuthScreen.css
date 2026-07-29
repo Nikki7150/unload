@@ -34,20 +34,31 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-family: var(--title-font);
+    background-color: var(--page-color);
+    border-radius: 0;
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
 }
 
 .login-screen .right-page {
     height: 100%;
-    width: 96.5%;
-    padding-left: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--page-color);
+    border-radius: 0;
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+    font-family: var(--journal-font);
+}
+
+.welcome-message {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-family: var(--journal-font);
+    height: 100%;
+    width: 100%;
 }
 
 .login-form {
@@ -55,6 +66,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.login-form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
 }
 
 .login-form input {
@@ -95,18 +115,31 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    background-color: var(--page-color);
+    border-radius: 0;
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
 }
 
 .signup-screen .right-page {
     height: 100%;
-    width: 96.5%;
-    padding-left: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--page-color);
+    border-radius: 0;
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+    font-family: var(--journal-font);
+}
+
+.signup-form-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: 100%;
+    width: 100%;
 }
 
 .signup-form {
