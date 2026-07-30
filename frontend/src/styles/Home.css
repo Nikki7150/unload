@@ -5,7 +5,7 @@
     width: 100%;
 }
 
-.toggle-entry-btn, .logout-btn, .profile-btn {
+.entry-btn, .logout-btn, .profile-btn, .journals-btn {
     background-color: var(--light-red);
     border: none;
     color: white;
@@ -36,7 +36,7 @@
     border-bottom-right-radius: 5px;
 }
 
-.toggle-entry-btn {
+.entry-btn {
     right: -40px;
     top: 29%;
     border-radius: 0;
@@ -44,7 +44,23 @@
     border-bottom-right-radius: 5px;
 }
 
-.toggle-entry-btn-left {
+.entry-btn-left {
+    right: auto;
+    left: -40px;
+    border-radius: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.journals-btn {
+    right: -40px;
+    top: 44%;
+    border-radius: 0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.journals-btn-left {
     right: auto;
     left: -40px;
     border-radius: 0;
@@ -60,6 +76,13 @@
     border-bottom-left-radius: 5px;
 }
 
+.profile-btn-right {
+    right: -40px;
+    left: auto;
+    border-radius: 0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
 
 .title-row {
     padding: 30px 30px 0 30px;
@@ -128,9 +151,9 @@
     padding: 10px 20px;
     width: 100px;
     height: 40px;
-    position: absolute;
-    bottom: 10px;
-    right: 20px;
+    position: relative;
+    bottom: 1px;
+    right: -500px;
 }
 
 @media (max-width: 900px) {
@@ -226,4 +249,24 @@
 .home-left-page {
     transform-origin: right center;
     backface-visibility: hidden;
+}
+
+.profile-wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    perspective: 2000px;
+}
+
+.profile-layer-under {
+    grid-column: 1 / -1;
+    position: absolute;
+    inset: 0;
+}
+
+.profile-layer-solo {
+    grid-column: 1 / -1;
+    position: absolute;
+    inset: 0;
+    z-index: 10;
 }

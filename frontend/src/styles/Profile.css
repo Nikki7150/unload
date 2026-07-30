@@ -1,0 +1,74 @@
+/*-------------------------------------------------------- HOME --------------------------------------------------------*/
+.profile-screen {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.profile-left-page {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--page-color);
+    border-radius: 0;
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
+}
+
+.profile-right-page {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--page-color);
+    border-radius: 0;
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+}
+
+.profile-left-page,
+.profile-right-page {
+    min-height: 0;
+}
+
+.profile-left-page .stickers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.profile-right-page .profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.profile-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    font-family: var(--title-font);
+    border-bottom: 1px solid #d8ccb2;
+    padding-bottom: 0.5rem;
+    text-align: center;
+    width: 60%;
+}
+
+.profile-info p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    width: 50%;
+    color: #666;
+    border-bottom: 1px solid #d8ccb2;
+    font-family: var(--buttons-font);
+}

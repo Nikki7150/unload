@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, forwardRef } from "react";
 import useAuthStore from "../store/authStore";
+import "../styles/Profile.css";
 
 const Profile = forwardRef(function Profile(props, pageRef) {
     const token = useAuthStore((state) => state.token);
@@ -26,9 +27,13 @@ const Profile = forwardRef(function Profile(props, pageRef) {
     }, []);
 
     return (
-        <div className="profle-screen">
+        <div className="profile-screen">
             <div className="profile-left-page">
-                {error && <p className="error">{error}</p>}
+                <div className="stickers">
+                    <div className="sticker"> sticker 1</div>
+                    <div className="sticker"> sticker 2</div>
+                    <div className="sticker"> sticker 3</div>
+                </div>
             </div>
             <div className="profile-right-page" ref={pageRef}>
                 {!profile && !error && <p>Loading profile...</p>}

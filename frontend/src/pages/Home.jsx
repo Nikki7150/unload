@@ -36,9 +36,12 @@ export default function Home() {
     const [profileTransitioning, setProfileTransitioning] = useState(false);
     const [profileDirection, setProfileDirection] = useState(null);
     const profileTurnRef = useRef(null);
+    const [pendingView, setPendingView] = useState(null);
 
-    const handleToggle = () => {
-        setDirection(view === 'entry' ? 'forward' : 'backward');
+    const gotoView = (targetView) => {
+        if (targetView === view || transitioning) return;
+        if (showProfile || profileTransitioning) return;
+        setDirection(targetView === 'dashboard' ? 'forward' : 'backward');
         setTransitioning(true);
     };
 
@@ -190,11 +193,15 @@ export default function Home() {
     }, [loggingOut]);
 
     const handleOpenProfile = () => {
+        if (showProfile || profileTransitioning) return;
         setProfileDirection('opening');
         setProfileTransitioning(true);
     };
 
-    const handleCloseProfile = () => {
+    const handleCloseProfile = (targetView) => {
+        if (targetView && targetView !== view) {
+            setView(targetView);
+        }
         setProfileDirection('closing');
         setProfileTransitioning(true);
     };
@@ -230,11 +237,28 @@ export default function Home() {
         }
     };
 
+    const handleEntryClick = () => {
+        if (showProfile || profileTransitioning) {
+            handleCloseProfile('entry');
+        } else {
+            gotoView('entry');
+        }
+    };
+
+    const handleJournalsClick = () => {
+        if (showProfile || profileTransitioning) {
+            handleCloseProfile('dashboard');
+        } else {
+            gotoView('dashboard');
+        }
+    };
+
     return (
         <div className="home-root">
             <button 
-                className="profile-btn" 
+                className={`profile-btn ${showProfile ? 'profile-btn-right' : ''}`}
                 onClick={handleOpenProfile}
+                style={{ visibility: transitioning ? 'hidden' : 'visible' }}
             >
                 <FaUserCircle />
             </button>
@@ -244,11 +268,17 @@ export default function Home() {
             >
                 Logout</button>
             <button 
-                className={`toggle-entry-btn ${view === 'dashboard' ? 'toggle-entry-btn-left' : ''}`}
-                onClick={handleToggle}
+                className={`entry-btn ${view === 'dashboard' ? 'entry-btn-left' : ''}`}
+                onClick={handleEntryClick}
                 style={{ visibility: transitioning ? 'hidden' : 'visible' }}
             >
-                    {view === 'entry' ? 'Journals' : 'Entry'}
+                    Entry
+            </button>
+            <button 
+                className="journals-btn"
+                onClick={handleJournalsClick}
+            >
+                    Journals
             </button>
             <div className="home-container">
                 <div className="profile-wrapper">
@@ -325,7 +355,7 @@ export default function Home() {
                                             </div>
                                         </div>
                                     ) : (
-                                        <Dashboard ref={setLeftPageRefs} />
+                                        <Dashboard ref={turningPageRef} />
                                     )}
                                 </div>
                             )}
