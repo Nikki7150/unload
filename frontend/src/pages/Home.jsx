@@ -4,6 +4,8 @@ import Dashboard from "./Dashboard";
 import "../styles/Home.css";
 import gsap from "gsap";
 import AuthScreen from "./AuthScreen";
+import Profile from "./Profile";
+import { FaUserCircle } from "react-icons/fa";
 
 export default function Home() {
     const token = useAuthStore((state) => state.token);
@@ -30,6 +32,10 @@ export default function Home() {
     const turningPageRef = useRef(null);
     const restLeftPageRef = useRef(null);
     const [loggingOut, setLoggingOut] = useState(false);
+    const [showProfile, setShowProfile] = useState(false);
+    const [profileTransitioning, setProfileTransitioning] = useState(false);
+    const [profileDirection, setProfileDirection] = useState(null);
+    const profileTurnRef = useRef(null);
 
     const handleToggle = () => {
         setDirection(view === 'entry' ? 'forward' : 'backward');
@@ -183,8 +189,55 @@ export default function Home() {
         };
     }, [loggingOut]);
 
+    const handleOpenProfile = () => {
+        setProfileDirection('opening');
+        setProfileTransitioning(true);
+    };
+
+    const handleCloseProfile = () => {
+        setProfileDirection('closing');
+        setProfileTransitioning(true);
+    };
+
+    useEffect(() => {
+        if (!profileTransitioning) return;
+        const target = profileTurnRef.current;
+        if (!target) return;
+        const tl = gsap.timeline({
+            onComplete: () => {
+                if (profileDirection === 'opening') {
+                    setShowProfile(true);
+                } else {
+                    setShowProfile(false);
+                }
+                setProfileTransitioning(false);
+            }
+        });
+        tl.to(target, {
+            rotateY: profileDirection === 'opening' ? 180 : -180,
+            duration: 0.6,
+            ease: "power2.inOut",
+        });
+        return () => {
+            tl.kill();
+        };
+    }, [profileTransitioning, profileDirection]);
+
+    const setLeftPageRefs = (el) => {
+        restLeftPageRef.current = el;
+        if (profileDirection === 'opening') {
+            profileTurnRef.current = el;
+        }
+    };
+
     return (
         <div className="home-root">
+            <button 
+                className="profile-btn" 
+                onClick={handleOpenProfile}
+            >
+                <FaUserCircle />
+            </button>
             <button 
                 className="logout-btn" 
                 onClick={handleLogoutClick}
@@ -198,77 +251,86 @@ export default function Home() {
                     {view === 'entry' ? 'Journals' : 'Entry'}
             </button>
             <div className="home-container">
-                <div className="spread-wrapper">
-                    {loggingOut && (
-                        <div className="spread-layer-under">
-                            <AuthScreen />
+                <div className="profile-wrapper">
+                    {(showProfile || (profileTransitioning && profileDirection === 'closing')) && (
+                        <div className={profileTransitioning ? "profile-layer-top" : "profile-layer-solo"}>
+                            <Profile ref={profileDirection === 'closing' ? profileTurnRef : null} onClose={handleCloseProfile} />
                         </div>
                     )}
-                    <div className="spread-layer-under">
-                        {underView === 'entry' ? (
-                            <div className="entry-container">
-                                <div className="home-left-page" ref={restLeftPageRef}>
-                                    <div className="title-row">
-                                        <input
-                                            type="text"
-                                            value={title}
-                                            onChange={(e) => setTitle(e.target.value)}
-                                            placeholder="Title your thoughts..."
-                                        />
-                                    </div>
-                                    <div
-                                        className="book-text-left"
-                                        contentEditable="true"
-                                        ref={leftRef}
-                                        placeholder="Dump your thoughts here..."
-                                        onInput={handleLeftInput}
-                                        suppressContentEditableWarning={true}
-                                    ></div>
+                    <div className="profile-layer-under" style={{ visibility: showProfile && !profileTransitioning ? 'hidden' : 'visible' }}>
+                        <div className="spread-wrapper">
+                            {loggingOut && (
+                                <div className="spread-layer-under">
+                                    <AuthScreen />
                                 </div>
-                                <div className="home-right-page" >
-                                    <div
-                                        className="book-text-right"
-                                        contentEditable="true"
-                                        ref={rightRef}
-                                        placeholder="Dump your thoughts here..."
-                                        suppressContentEditableWarning={true}
-                                    ></div>
-                                    <button className="submit-btn" onClick={handleSubmit} disabled={isSubmitting}>
-                                        {isSubmitting ? 'Saving...' : 'Submit'}
-                                    </button>
-                                    {error && <p className="error-message">{error}</p>}
-                                    {success && <p className="success-message">Entry saved!</p>}
-                                </div>
-                            </div>
-                        ) : (
-                            <Dashboard ref={restLeftPageRef} />
-                        )}
-                    </div>
-                    {transitioning && (
-                        <div className="spread-layer-top">
-                            {view === 'entry' ? (
-                                <div className="entry-container">
-                                    <div className="home-left-page">
-                                        <div className="title-row">
-                                            <input
-                                                type="text"
-                                                placeholder="Title your thoughts..."
-                                                value={title}
-                                                readOnly
-                                            />
+                            )}
+                            <div className="spread-layer-under">
+                                {underView === 'entry' ? (
+                                    <div className="entry-container">
+                                        <div className="home-left-page" ref={setLeftPageRefs}>
+                                            <div className="title-row">
+                                                <input
+                                                    type="text"
+                                                    value={title}
+                                                    onChange={(e) => setTitle(e.target.value)}
+                                                    placeholder="Title your thoughts..."
+                                                />
+                                            </div>
+                                            <div
+                                                className="book-text-left"
+                                                contentEditable="true"
+                                                ref={leftRef}
+                                                placeholder="Dump your thoughts here..."
+                                                onInput={handleLeftInput}
+                                                suppressContentEditableWarning={true}
+                                            ></div>
                                         </div>
-                                        <div className="book-text-left">{leftText}</div>
+                                        <div className="home-right-page" >
+                                            <div
+                                                className="book-text-right"
+                                                contentEditable="true"
+                                                ref={rightRef}
+                                                placeholder="Dump your thoughts here..."
+                                                suppressContentEditableWarning={true}
+                                            ></div>
+                                            <button className="submit-btn" onClick={handleSubmit} disabled={isSubmitting}>
+                                                {isSubmitting ? 'Saving...' : 'Submit'}
+                                            </button>
+                                            {error && <p className="error-message">{error}</p>}
+                                            {success && <p className="success-message">Entry saved!</p>}
+                                        </div>
                                     </div>
-                                    <div className="home-right-page" ref={turningPageRef}>
-                                        <div className="book-text-right">{rightText}</div>
-                                        <button className="submit-btn">Submit</button>
-                                    </div>
+                                ) : (
+                                    <Dashboard ref={setLeftPageRefs} />
+                                )}
+                            </div>
+                            {transitioning && (
+                                <div className="spread-layer-top">
+                                    {view === 'entry' ? (
+                                        <div className="entry-container">
+                                            <div className="home-left-page">
+                                                <div className="title-row">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Title your thoughts..."
+                                                        value={title}
+                                                        readOnly
+                                                    />
+                                                </div>
+                                                <div className="book-text-left">{leftText}</div>
+                                            </div>
+                                            <div className="home-right-page" ref={turningPageRef}>
+                                                <div className="book-text-right">{rightText}</div>
+                                                <button className="submit-btn">Submit</button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <Dashboard ref={setLeftPageRefs} />
+                                    )}
                                 </div>
-                            ) : (
-                                <Dashboard ref={turningPageRef} />
                             )}
                         </div>
-                    )}
+                    </div>
                 </div>
             </div>
         </div>

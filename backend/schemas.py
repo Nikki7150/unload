@@ -22,6 +22,14 @@ class UserLogin(BaseModel):
     email: str
     password: str
 
+class UserProfileOut(BaseModel):
+    email: str
+    username: str
+    created_at: datetime
+
+    class Config():
+            orm_mode = True
+
 class Token(BaseModel):
     access_token: str
     token_type: str

@@ -219,3 +219,7 @@ def edit_note(note_id: int, note_update: schemas.NoteUpdate, db: Session = Depen
             detail="An error occured while updating note"
         )
     return note
+
+@app.get("/users/me", response_model=schemas.UserProfileOut)
+def get_current_user_info(current_user: models.User = Depends(get_current_user)):
+    return current_user

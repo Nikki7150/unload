@@ -5,7 +5,7 @@
     width: 100%;
 }
 
-.toggle-entry-btn, .logout-btn, .settings-btn {
+.toggle-entry-btn, .logout-btn, .profile-btn {
     background-color: var(--light-red);
     border: none;
     color: white;
@@ -22,7 +22,7 @@
 
 .logout-btn {
     left: -40px;
-    top: 5%;
+    top: 11%;
     border-radius: 0;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
@@ -38,7 +38,7 @@
 
 .toggle-entry-btn {
     right: -40px;
-    top: 23%;
+    top: 29%;
     border-radius: 0;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -52,13 +52,14 @@
     border-bottom-left-radius: 5px;
 }
 
-.settings-btn {
-    right: -40px;
-    top: 46%;
+.profile-btn {
+    left: -40px;
+    top: 5%;
     border-radius: 0;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
+
 
 .title-row {
     padding: 30px 30px 0 30px;
