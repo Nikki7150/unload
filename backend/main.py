@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, UploadFile, File
 from sqlalchemy.orm import Session
 
 import models, schemas, security, tokens, ai_service
@@ -6,12 +6,19 @@ from database import engine, get_db
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import or_
+import os, shutil
+from fastapi.staticfiles import StaticFiles
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+UPLOAD_DIR = "uploads/profile-pictures"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 app.add_middleware(
     CORSMiddleware,
@@ -223,3 +230,22 @@ def edit_note(note_id: int, note_update: schemas.NoteUpdate, db: Session = Depen
 @app.get("/users/me", response_model=schemas.UserProfileOut)
 def get_current_user_info(current_user: models.User = Depends(get_current_user)):
     return current_user
+
+@app.post("/users/me/profile-picture")
+def upload_profile_picture(
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user)
+):
+    file_extension = file.filename.split(".")[-1]
+    filename = f"user_{current_user.id}.{file_extension}"
+    filepath = os.path.join(UPLOAD_DIR, filename)
+
+    with open(filepath, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    current_user.profile_picture_url = f"/uploads/profile_pictures/{filename}"
+    db.commit()
+    db.refresh(current_user)
+
+    return {"profile_picture_url": current_user.profile_picture_url}

@@ -74,3 +74,25 @@
     border-bottom: 1px solid #d8ccb2;
     font-family: var(--buttons-font);
 }
+
+.profile-picture {
+    width: 200px;
+    height: 250px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    bordeR: 15px solid white;
+    rotate: 5deg;
+}
+
+.upload-prompt {
+    font-size: 3rem;
+    color: #000000;
+    text-align: center;
+    line-height: 250px;
+    cursor: pointer;
+    border: 2px dashed #000000;
+    border-bottom: 2px dashed #000000 !important;
+    height: 245px;
+    width: 195px !important;
+    margin: 0;
+}

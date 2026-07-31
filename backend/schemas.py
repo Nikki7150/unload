@@ -26,9 +26,10 @@ class UserProfileOut(BaseModel):
     email: str
     username: str
     created_at: datetime
+    profile_picture_url: Optional[str] = None
 
     class Config():
-            orm_mode = True
+        orm_mode = True
 
 class Token(BaseModel):
     access_token: str

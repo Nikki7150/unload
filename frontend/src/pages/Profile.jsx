@@ -39,6 +39,10 @@ const Profile = forwardRef(function Profile(props, pageRef) {
                 {!profile && !error && <p>Loading profile...</p>}
                 {profile && (
                     <div className="profile-info">
+                        <div className="profile-picture">
+                            <input type="file" accept="image/*" className="upload-input" style={{ display: 'none' }} />
+                            <p className="upload-prompt" onClick={() => document.querySelector('.upload-input').click()}>+</p>
+                        </div>
                         <h1 className="profile-title">{profile.username}'s Journal</h1>
                         <p className="profile-email">{profile.email}</p>
                         <p className="profile-created-at">Journal Started: {new Date(profile.created_at).toLocaleDateString()}</p>

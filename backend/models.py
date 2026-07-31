@@ -10,6 +10,7 @@ class User(Base):
     username = Column(String, unique=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    profile_picture_url = Column(String, nullable=True)
 
 class Note(Base):
     __tablename__ = "notes"
