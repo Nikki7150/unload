@@ -67,6 +67,7 @@ export default function Home() {
 
     const underView = transitioning ? (view === 'entry' ? 'dashboard' : 'entry') : view;
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
@@ -88,6 +89,8 @@ export default function Home() {
             const data = await response.json();
             setLastTopic(data.topic);
             setTitle('');
+            setLeftText('');
+            setRightText('');
             leftRef.current.textContent = '';
             rightRef.current.textContent = '';
             setSuccess(true);
@@ -199,6 +202,7 @@ export default function Home() {
     };
 
     const handleCloseProfile = (targetView) => {
+        if (profileTransitioning) return; // already closing/opening — ignore
         if (targetView && targetView !== view) {
             setView(targetView);
         }
@@ -214,6 +218,7 @@ export default function Home() {
             onComplete: () => {
                 if (profileDirection === 'opening') {
                     setShowProfile(true);
+                    gsap.set(target, { rotateY: 0 });
                 } else {
                     setShowProfile(false);
                 }
@@ -268,11 +273,11 @@ export default function Home() {
             >
                 Logout</button>
             <button 
-                className={`entry-btn ${view === 'dashboard' ? 'entry-btn-left' : ''}`}
-                onClick={handleEntryClick}
+                className={`entry-btn ${view === 'dashboard' ? 'entry-btn-left' : ''} ${showProfile || profileTransitioning ? 'entry-btn-right' : ''}`} 
+                onClick={handleEntryClick} 
                 style={{ visibility: transitioning ? 'hidden' : 'visible' }}
-            >
-                    Entry
+            > 
+                Entry 
             </button>
             <button 
                 className="journals-btn"

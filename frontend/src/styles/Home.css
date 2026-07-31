@@ -52,6 +52,14 @@
     border-bottom-left-radius: 5px;
 }
 
+.entry-btn-right {
+    right: -40px;
+    left: auto;
+    border-radius: 0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
 .journals-btn {
     right: -40px;
     top: 44%;
