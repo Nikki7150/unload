@@ -244,7 +244,7 @@ def upload_profile_picture(
     with open(filepath, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    current_user.profile_picture_url = f"/uploads/profile_pictures/{filename}"
+    current_user.profile_picture_url = f"/uploads/profile-pictures/{filename}"
     db.commit()
     db.refresh(current_user)
 
