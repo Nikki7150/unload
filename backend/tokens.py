@@ -1,9 +1,13 @@
+import os
+from dotenv import load_dotenv
 from datetime import datetime, timedelta
-from jose import jwt, JWTError
+from jose import jwt
 
-SECRET_KEY = "some-random-secret-string-change-this-later" # used to sign tokens
+load_dotenv()
+
+SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 7 days
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
 
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
