@@ -12,7 +12,7 @@ const Profile = forwardRef(function Profile(props, pageRef) {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await authFetch('http://127.0.0.1:8000/users/me', {
+                const response = await authFetch('${import.meta.env.VITE_API_URL}/users/me', {
                     method: 'GET',
                     headers: {'Authorization': `Bearer ${token}` },
                 });
@@ -35,7 +35,7 @@ const Profile = forwardRef(function Profile(props, pageRef) {
         const formData = new FormData();
         formData.append('file', file);
         try {
-            const response = await authFetch('http://127.0.0.1:8000/users/me/profile-picture', {
+            const response = await authFetch('${import.meta.env.VITE_API_URL}/users/me/profile-picture', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`

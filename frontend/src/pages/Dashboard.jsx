@@ -17,7 +17,7 @@ const Dashboard = forwardRef(function Dashboard(props, leftPageRef) {
 
     const fetchNotes = async () => {
         try {
-            const response = await authFetch('http://127.0.0.1:8000/notes', {
+            const response = await authFetch('${import.meta.env.VITE_API_URL}/notes', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -35,7 +35,7 @@ const Dashboard = forwardRef(function Dashboard(props, leftPageRef) {
 
     const fetchTopics = async () => {
         try {
-            const response = await authFetch('http://127.0.1:8000/notes/topics', {
+            const response = await authFetch('${import.meta.env.VITE_API_URL}/notes/topics', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -58,7 +58,7 @@ const Dashboard = forwardRef(function Dashboard(props, leftPageRef) {
 
     const handleDelete = async (noteId) => {
         try {
-            const response = await authFetch(`http://127.0.0.1:8000/notes/${noteId}`, {
+            const response = await authFetch(`${import.meta.env.VITE_API_URL}/notes/${noteId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -76,7 +76,7 @@ const Dashboard = forwardRef(function Dashboard(props, leftPageRef) {
     const handleSearch = async (e) => {
         e.preventDefault();
         try {
-            const response = await authFetch(`http://127.0.0.1:8000/notes/search?q=${searchQuery}`, {
+            const response = await authFetch(`${import.meta.env.VITE_API_URL}/notes/search?q=${searchQuery}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -99,7 +99,7 @@ const Dashboard = forwardRef(function Dashboard(props, leftPageRef) {
 
     const handleTopicClick = async (topic) => {
         try {
-            const response = await authFetch(`http://127.0.0.1:8000/notes/by-topics?topic=${topic}`, {
+            const response = await authFetch(`${import.meta.env.VITE_API_URL}/notes/by-topics?topic=${topic}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`

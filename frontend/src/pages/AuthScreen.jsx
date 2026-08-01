@@ -13,7 +13,7 @@ export const Login = forwardRef(function Login({ onAuthSuccess }, rightPageRef) 
         e.preventDefault();
         setError('');
         try {
-            const response = await fetch('http://127.0.0.1:8000/login', {
+            const response = await fetch('${import.meta.env.VITE_API_URL}/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
@@ -74,7 +74,7 @@ export const Signup = forwardRef(function Signup({ onAuthSuccess }, rightPageRef
         e.preventDefault();
         setError('');
         try {
-            const signupResponse = await fetch('http://127.0.0.1:8000/signup', {
+            const signupResponse = await fetch('${import.meta.env.VITE_API_URL}/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password, username }),
@@ -82,7 +82,7 @@ export const Signup = forwardRef(function Signup({ onAuthSuccess }, rightPageRef
             if (!signupResponse.ok) {
                 throw new Error('Signup failed');
             }
-            const loginResponse = await fetch('http://127.0.0.1:8000/login', {
+            const loginResponse = await fetch('${import.meta.env.VITE_API_URL}/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),

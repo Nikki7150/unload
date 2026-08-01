@@ -22,7 +22,7 @@ export default function JournalViewer({ note, onBack, onUpdate }) {
     const handleSave = async () => {
         setIsSubmitting(true);
         try {
-            const response = await authFetch(`http://127.0.0.1:8000/notes/${note.id}`, {
+            const response = await authFetch(`${import.meta.env.VITE_API_URL}/notes/${note.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

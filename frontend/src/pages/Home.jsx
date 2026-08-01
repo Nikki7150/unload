@@ -76,7 +76,7 @@ export default function Home() {
         setIsSubmitting(true);
         const journalEntry = leftRef.current.textContent + '\n' + rightRef.current.textContent;
         try {
-            const response = await authFetch('http://127.0.0.1:8000/notes', {
+            const response = await authFetch('${import.meta.env.VITE_API_URL}/notes', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
