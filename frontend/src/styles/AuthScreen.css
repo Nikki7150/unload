@@ -181,6 +181,16 @@
     .login-screen .left-page,
     .signup-screen .left-page {
         min-height: 200px;
+        border-radius: 0;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+    }
+
+    .login-screen .right-page,
+    .signup-screen .right-page {
+        border-radius: 0;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
     }
 
     .login-form input,
@@ -188,26 +198,9 @@
         width: min(250px, 80vw);
     }
 
-    .toggle-auth-btn {
+    .toggle-auth-button {
         position: static;
-        margin-top: 20px;
+        margin: 20px auto;
+        display: block;
     }
-}
-
-.right-page {
-    transform-origin: left center;
-    backface-visibility: hidden;
-}
-
-.spread-wrapper {
-    grid-column: 1 / -1;
-    position: relative;
-    height: 100%;
-    width: 100%;
-    perspective: 2000px;
-}
-
-.spread-layer-under {
-    position: absolute;
-    inset: 0;
 }

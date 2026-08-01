@@ -94,3 +94,35 @@
     height: 100%;
     object-fit: cover;
 }
+
+@media (max-width: 900px) {
+    .profile-screen {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+    }
+
+    .profile-left-page {
+        border-radius: 0;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        min-height: 200px;
+    }
+
+    .profile-right-page {
+        border-radius: 0;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+    }
+
+    .profile-picture,
+    .upload-prompt {
+        width: 150px !important;
+        height: 190px !important;
+        line-height: 190px;
+    }
+
+    .profile-title,
+    .profile-info p {
+        width: 85%;
+    }
+}

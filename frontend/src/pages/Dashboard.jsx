@@ -30,7 +30,7 @@ const Dashboard = forwardRef(function Dashboard(props, leftPageRef) {
             setNotes(data);
         } catch (error) {
             setError('Something went wrong. Please try again.');
-        }
+        } 
     };
 
     const fetchTopics = async () => {

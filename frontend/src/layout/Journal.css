@@ -79,15 +79,18 @@ button {
         height: 95vh;
         width: 98vw;
         border-radius: 20px;
+        padding: 0;
     }
 
     .journal {
         grid-template-columns: 1fr;
         border-radius: 20px;
         overflow-y: auto;
+        height: 100%;
+        width: 100%;
     }
 
     .journal::before {
-        display: none; /* the spine only makes sense with two visible pages side by side */
+        display: none;
     }
 }

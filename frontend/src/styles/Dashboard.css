@@ -347,16 +347,38 @@ textarea.journal-viewer-journal-input {
         overflow-y: auto;
     }
 
+    .journal-dashboard .left-page {
+        border-radius: 0;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+    }
+
     .journal-dashboard .right-page {
         width: 100%;
         padding-left: 0;
         margin-top: 20px;
         border-top: 1px solid #625151;
         padding-top: 20px;
+        border-radius: 0;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+    }
+
+    .search-form {
+        margin-right: 0;
+        margin-top: 10px;
+        flex-wrap: wrap;
+    }
+
+    .search-input {
+        width: 100%;
+        margin-bottom: 8px;
     }
 
     .notes-list {
         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        margin-left: 0;
+        padding: 0 20px;
     }
 
     .note-item {

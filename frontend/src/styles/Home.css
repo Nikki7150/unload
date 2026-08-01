@@ -164,30 +164,6 @@
     right: -500px;
 }
 
-@media (max-width: 900px) {
-    .book-text {
-        column-width: 100%;
-        column-gap: 0;
-        height: 60vh;
-    }
-
-    .toggle-entry-btn,
-    .logout-button {
-        writing-mode: horizontal-tb;
-        text-orientation: initial;
-        position: static;
-        width: 100%;
-        border-radius: 5px;
-        margin-bottom: 5px;
-    }
-
-    .submit-btn {
-        position: static;
-        width: 100%;
-        margin-top: 10px;
-    }
-}
-
 .home-container {
     grid-column: 1 / -1;
     height: 100%;
@@ -295,4 +271,54 @@
     position: absolute;
     inset: 0;
     z-index: 10;
+}
+
+@media (max-width: 900px) {
+    .entry-container {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+    }
+
+    .home-left-page {
+        border-radius: 0;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        min-height: 300px;
+    }
+
+    .home-right-page {
+        border-radius: 0;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+    }
+
+    .book-text-left,
+    .book-text-right {
+        height: auto;
+        min-height: 200px;
+    }
+
+    .entry-btn,
+    .logout-btn,
+    .profile-btn,
+    .journals-btn {
+        writing-mode: horizontal-tb;
+        text-orientation: initial;
+        position: static;
+        width: 100%;
+        border-radius: 5px;
+        margin-bottom: 5px;
+    }
+
+    .submit-btn {
+        position: static;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .success-message,
+    .error-message {
+        position: static;
+        text-align: center;
+    }
 }
