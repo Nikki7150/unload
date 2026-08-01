@@ -61,7 +61,7 @@ const Profile = forwardRef(function Profile(props, pageRef) {
                             <input type="file" accept="image/*" className="upload-input" style={{ display: 'none' }} onChange={handleFileChange} />
                             {profilePicture ? (
                                 <img 
-                                    src={`http://127.0.1:8000${profilePicture}`} 
+                                    src={`${import.meta.env.VITE_API_URL}${profilePicture}`} 
                                     alt="Profile" 
                                     className="profile-image"
                                     onClick={() => document.querySelector('.upload-input').click()}
