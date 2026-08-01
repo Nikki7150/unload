@@ -13,18 +13,19 @@ export const Login = forwardRef(function Login({ onAuthSuccess }, rightPageRef) 
         e.preventDefault();
         setError('');
         try {
-            const response = await fetch('${import.meta.env.VITE_API_URL}/login', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
             });
             if (!response.ok) {
-                throw new Error('Login failed');
+                const errorData = await response.json();
+                throw new Error(errorData.detail || 'Login failed');
             }
             const data = await response.json();
             onAuthSuccess(data.access_token);
         } catch (error) {
-            setError('Something went wrong. Please try again.');
+            setError(error.message);
         }
     };
 
@@ -74,26 +75,30 @@ export const Signup = forwardRef(function Signup({ onAuthSuccess }, rightPageRef
         e.preventDefault();
         setError('');
         try {
-            const signupResponse = await fetch('${import.meta.env.VITE_API_URL}/signup', {
+            const signupResponse = await fetch(`${import.meta.env.VITE_API_URL}/signup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password, username }),
             });
             if (!signupResponse.ok) {
-                throw new Error('Signup failed');
+                const errorData = await signupResponse.json();
+                throw new Error(errorData.detail || 'Signup failed');
             }
-            const loginResponse = await fetch('${import.meta.env.VITE_API_URL}/login', {
+
+            const loginResponse = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
             });
             if (!loginResponse.ok) {
-                throw new Error('Login after signup failed');
+                const errorData = await loginResponse.json();
+                throw new Error(errorData.detail || 'Login after signup failed');
             }
+
             const data = await loginResponse.json();
             login(data.access_token);
         } catch (error) {
-            setError('Something went wrong. Please try again.');
+            setError(error.message);
         }
     };
 
