@@ -17,7 +17,7 @@ const Dashboard = forwardRef(function Dashboard(props, leftPageRef) {
 
     const fetchNotes = async () => {
         try {
-            const response = await authFetch('${import.meta.env.VITE_API_URL}/notes', {
+            const response = await authFetch(`${import.meta.env.VITE_API_URL}/notes`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -35,7 +35,7 @@ const Dashboard = forwardRef(function Dashboard(props, leftPageRef) {
 
     const fetchTopics = async () => {
         try {
-            const response = await authFetch('${import.meta.env.VITE_API_URL}/notes/topics', {
+            const response = await authFetch(`${import.meta.env.VITE_API_URL}/notes/topics`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
