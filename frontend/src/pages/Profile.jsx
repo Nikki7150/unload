@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, forwardRef } from "react";
 import useAuthStore from "../store/authStore";
 import "../styles/Profile.css";
+import { authFetch } from '../utils/authFetch';
 
 const Profile = forwardRef(function Profile(props, pageRef) {
     const token = useAuthStore((state) => state.token);
@@ -11,7 +12,7 @@ const Profile = forwardRef(function Profile(props, pageRef) {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/users/me', {
+                const response = await authFetch('http://127.0.0.1:8000/users/me', {
                     method: 'GET',
                     headers: {'Authorization': `Bearer ${token}` },
                 });
@@ -34,7 +35,7 @@ const Profile = forwardRef(function Profile(props, pageRef) {
         const formData = new FormData();
         formData.append('file', file);
         try {
-            const response = await fetch('http://127.0.0.1:8000/users/me/profile-picture', {
+            const response = await authFetch('http://127.0.0.1:8000/users/me/profile-picture', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`

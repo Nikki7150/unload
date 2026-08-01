@@ -3,6 +3,7 @@ import { FaTimes, FaEdit } from "react-icons/fa";
 import { useState } from "react";
 import useAuthStore from "../store/authStore";
 import { timeAgo } from "../utils/timeAgo";
+import { authFetch } from '../utils/authFetch';
 
 export default function JournalViewer({ note, onBack, onUpdate }) {
     const [isEditing, setIsEditing] = useState(false);
@@ -21,7 +22,7 @@ export default function JournalViewer({ note, onBack, onUpdate }) {
     const handleSave = async () => {
         setIsSubmitting(true);
         try {
-            const response = await fetch(`http://127.0.0.1:8000/notes/${note.id}`, {
+            const response = await authFetch(`http://127.0.0.1:8000/notes/${note.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

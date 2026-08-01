@@ -4,6 +4,7 @@ import "../styles/Dashboard.css";
 import JournalViewer from "./JournalViewer";
 import { FaTrash, FaSearch, FaTimes } from "react-icons/fa";
 import { forwardRef } from "react";
+import { authFetch } from '../utils/authFetch';
 
 const Dashboard = forwardRef(function Dashboard(props, leftPageRef) {
     const [notes, setNotes] = useState([]);
@@ -17,7 +18,7 @@ const Dashboard = forwardRef(function Dashboard(props, leftPageRef) {
 
     const fetchNotes = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/notes', {
+            const response = await authFetch('http://127.0.0.1:8000/notes', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -35,7 +36,7 @@ const Dashboard = forwardRef(function Dashboard(props, leftPageRef) {
 
     const fetchTopics = async () => {
         try {
-            const response = await fetch('http://127.0.1:8000/notes/topics', {
+            const response = await authFetch('http://127.0.1:8000/notes/topics', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -58,7 +59,7 @@ const Dashboard = forwardRef(function Dashboard(props, leftPageRef) {
 
     const handleDelete = async (noteId) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/notes/${noteId}`, {
+            const response = await authFetch(`http://127.0.0.1:8000/notes/${noteId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -76,7 +77,7 @@ const Dashboard = forwardRef(function Dashboard(props, leftPageRef) {
     const handleSearch = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://127.0.0.1:8000/notes/search?q=${searchQuery}`, {
+            const response = await authFetch(`http://127.0.0.1:8000/notes/search?q=${searchQuery}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -99,7 +100,7 @@ const Dashboard = forwardRef(function Dashboard(props, leftPageRef) {
 
     const handleTopicClick = async (topic) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/notes/by-topics?topic=${topic}`, {
+            const response = await authFetch(`http://127.0.0.1:8000/notes/by-topics?topic=${topic}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`

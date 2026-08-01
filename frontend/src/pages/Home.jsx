@@ -6,6 +6,7 @@ import gsap from "gsap";
 import AuthScreen from "./AuthScreen";
 import Profile from "./Profile";
 import { FaUserCircle } from "react-icons/fa";
+import { authFetch } from '../utils/authFetch';
 
 export default function Home() {
     const token = useAuthStore((state) => state.token);
@@ -75,7 +76,7 @@ export default function Home() {
         setIsSubmitting(true);
         const journalEntry = leftRef.current.textContent + '\n' + rightRef.current.textContent;
         try {
-            const response = await fetch('http://127.0.0.1:8000/notes', {
+            const response = await authFetch('http://127.0.0.1:8000/notes', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -83,9 +84,7 @@ export default function Home() {
                 },
                 body: JSON.stringify({ title, journal: journalEntry })
             });
-            if (!response.ok) {
-                throw new Error('Failed to submit entry');
-            }
+            if (!response.ok) throw new Error('Failed to submit entry');
             const data = await response.json();
             setLastTopic(data.topic);
             setTitle('');
@@ -95,11 +94,28 @@ export default function Home() {
             rightRef.current.textContent = '';
             setSuccess(true);
         } catch (error) {
-            setError('Something went wrong. Please try again.');
+            if (error.message === 'SESSION_EXPIRED') {
+                localStorage.setItem('unload-draft', JSON.stringify({ title, leftText, rightText }));
+            } else {
+                setError('Something went wrong. Please try again.');
+            }
         } finally {
             setIsSubmitting(false);
         }
     };
+
+    useEffect(() => {
+        const saved = localStorage.getItem('unload-draft');
+        if (saved) {
+            const draft = JSON.parse(saved);
+            setTitle(draft.title || '');
+            setLeftText(draft.leftText || '');
+            setRightText(draft.rightText || '');
+            if (leftRef.current) leftRef.current.textContent = draft.leftText || '';
+            if (rightRef.current) rightRef.current.textContent = draft.rightText || '';
+            localStorage.removeItem('unload-draft');
+        }
+    }, []);
 
     const lastValidContent = useRef('');
 
