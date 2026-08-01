@@ -1,4 +1,4 @@
-import userAuthStore from '../store/userStore';
+import userAuthStore from '../store/authStore';
 
 export async function authFetch(url, options = {}) {
     const response = await fetch(url, options);
