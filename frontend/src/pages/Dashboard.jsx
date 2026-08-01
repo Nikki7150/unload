@@ -5,7 +5,6 @@ import JournalViewer from "./JournalViewer";
 import { FaTrash, FaSearch, FaTimes } from "react-icons/fa";
 import { forwardRef } from "react";
 import { authFetch } from '../utils/authFetch';
-
 const Dashboard = forwardRef(function Dashboard(props, leftPageRef) {
     const [notes, setNotes] = useState([]);
     const [error, setError] = useState(null);

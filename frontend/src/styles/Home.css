@@ -226,6 +226,24 @@
     border-bottom-right-radius: 40px;
 }
 
+.success-message {
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    margin-top: 10px;
+    position: absolute;
+    bottom: 20px;
+    right: 150px;
+}
+
+.error-message {
+    color: rgb(255, 0, 0);
+    font-size: 16px;
+    margin-top: 10px;
+    position: absolute;
+    bottom: 20px;
+    right: 150px;
+}
+
 .spread-wrapper {
     position: relative;
     height: 100%;
